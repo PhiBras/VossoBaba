@@ -11,21 +11,24 @@
     theme: {
       extend: {
         colors: {
-          paper: '#F6F4EE',
-          paperdim: '#ECE9DF',
-          ink: '#1A1D18',
-          inksoft: '#5B5F55',
-          pitch: '#24402A',
-          pitchlight: '#37593F',
-          pitchtint: '#E3EDE1',
-          amber: '#C1852A',
-          ambertint: '#F7EAD2',
-          rust: '#A03B2E',
-          rusttint: '#F3DFDA',
-          gold: '#D9A441',
-          silver: '#9AA093',
-          bronze: '#B27A4F',
-          line: '#DAD5C6'
+          paper: 'var(--c-paper)',
+          surface: 'var(--c-surface)',
+          paperdim: 'var(--c-paperdim)',
+          ink: 'var(--c-ink)',
+          inksoft: 'var(--c-inksoft)',
+          pitch: 'var(--c-pitch)',
+          pitchlight: 'var(--c-pitchlight)',
+          pitchtint: 'var(--c-pitchtint)',
+          amber: 'var(--c-amber)',
+          ambertint: 'var(--c-ambertint)',
+          rust: 'var(--c-rust)',
+          rusttint: 'var(--c-rusttint)',
+          gold: 'var(--c-gold)',
+          silver: 'var(--c-silver)',
+          bronze: 'var(--c-bronze)',
+          line: 'var(--c-line)',
+          void: 'var(--c-void)',
+          mist: 'var(--c-mist)'
         },
         fontFamily: {
           display: ['Oswald', 'sans-serif'],
@@ -38,12 +41,56 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
+  :root {
+    --c-paper: #0A0D0A;
+    --c-surface: #12160F;
+    --c-paperdim: #1A211A;
+    --c-ink: #E9EEE4;
+    --c-inksoft: #8CA089;
+    --c-pitch: #2F9C55;
+    --c-pitchlight: #3DB868;
+    --c-pitchtint: #10281A;
+    --c-amber: #D9A13E;
+    --c-ambertint: #2E2210;
+    --c-rust: #DD6152;
+    --c-rusttint: #301613;
+    --c-line: #232B23;
+    --c-void: #050705;
+    --c-mist: #F2F3EE;
+    --c-gold: #D9A441;
+    --c-silver: #9AA093;
+    --c-bronze: #B27A4F;
+    --shadow-1: 0 1px 2px rgba(0,0,0,0.4);
+    --shadow-2: 0 8px 24px -12px rgba(0,0,0,0.6);
+    --shadow-1h: 0 2px 8px rgba(0,0,0,0.5);
+    --shadow-2h: 0 16px 32px -14px rgba(47,156,85,0.28);
+    --scrollbar-thumb: #2E362E;
+  }
+  [data-theme="light"] {
+    --c-paper: #F6F4EE;
+    --c-surface: #FFFFFF;
+    --c-paperdim: #ECE9DF;
+    --c-ink: #1A1D18;
+    --c-inksoft: #5B5F55;
+    --c-pitch: #24402A;
+    --c-pitchlight: #37593F;
+    --c-pitchtint: #E3EDE1;
+    --c-amber: #C1852A;
+    --c-ambertint: #F7EAD2;
+    --c-rust: #A03B2E;
+    --c-rusttint: #F3DFDA;
+    --c-line: #DAD5C6;
+    --shadow-1: 0 1px 2px rgba(26,29,24,0.04);
+    --shadow-2: 0 8px 20px -12px rgba(26,29,24,0.15);
+    --shadow-1h: 0 2px 6px rgba(26,29,24,0.06);
+    --shadow-2h: 0 14px 28px -14px rgba(26,29,24,0.22);
+    --scrollbar-thumb: #C7C2B2;
+  }
   body { font-family: 'Inter', sans-serif; }
   .font-display { font-family: 'Oswald', sans-serif; }
   ::-webkit-scrollbar { width: 6px; height: 6px; }
   ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: #C7C2B2; border-radius: 3px; }
-  .step-active { background: #24402A; color: #F6F4EE; }
+  ::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 3px; }
   .pitch-lines {
     background-image: repeating-linear-gradient(0deg, transparent, transparent 34px, rgba(255,255,255,0.06) 34px, rgba(255,255,255,0.06) 35px);
   }
@@ -51,15 +98,15 @@
     background-image: radial-gradient(rgba(255,255,255,0.10) 1.5px, transparent 1.5px);
     background-size: 16px 16px;
   }
-  .card { box-shadow: 0 1px 2px rgba(26,29,24,0.04), 0 8px 20px -12px rgba(26,29,24,0.15); }
-  .card:hover { box-shadow: 0 2px 6px rgba(26,29,24,0.06), 0 14px 28px -14px rgba(26,29,24,0.22); }
+  .card { box-shadow: var(--shadow-1), var(--shadow-2); }
+  .card:hover { box-shadow: var(--shadow-1h), var(--shadow-2h); }
 </style>
 </head>
 <body class="bg-paper text-ink antialiased min-h-screen flex flex-col">
 
   <!-- TOAST -->
-  <div id="toast" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-ink text-paper text-sm font-medium px-5 py-2.5 rounded-full shadow-lg flex items-center gap-2 transition-all duration-300 opacity-0 pointer-events-none -translate-y-3">
-    <i data-lucide="check-circle-2" class="w-4 h-4 text-pitchtint"></i>
+  <div id="toast" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-void text-mist text-sm font-medium px-5 py-2.5 rounded-full shadow-lg flex items-center gap-2 transition-all duration-300 opacity-0 pointer-events-none -translate-y-3">
+    <i data-lucide="check-circle-2" class="w-4 h-4 text-mist"></i>
     <span id="toast-msg">Ação realizada.</span>
   </div>
 
@@ -78,25 +125,37 @@
       </div>
 
       <nav class="hidden md:flex items-center gap-1.5 font-display text-[12.5px] tracking-wide bg-paperdim rounded-full p-1">
-        <button onclick="switchTab('reservas')" id="tab-reservas" class="px-4 py-2 rounded-full step-active transition">01 · RESERVAR</button>
+        <button onclick="switchTab('reservas')" id="tab-reservas" class="px-4 py-2 rounded-full bg-pitch text-mist font-semibold transition">01 · RESERVAR</button>
         <button onclick="switchTab('matchmaking')" id="tab-matchmaking" class="px-4 py-2 rounded-full text-inksoft transition">02 · MONTAR TIME</button>
         <button onclick="switchTab('seguranca')" id="tab-seguranca" class="px-4 py-2 rounded-full text-inksoft transition">03 · CONFIANÇA</button>
         <button onclick="switchTab('posjogo')" id="tab-posjogo" class="px-4 py-2 rounded-full text-inksoft transition">04 · AVALIAR</button>
       </nav>
 
-      <button onclick="switchTab('perfil')" id="tab-perfil" class="flex items-center gap-2.5 bg-paperdim hover:bg-line/60 rounded-full pl-3 pr-1.5 py-1.5 transition">
-        <div class="text-right hidden sm:block leading-tight">
-          <p class="text-xs font-semibold text-ink" id="nav-user-name">Lucas "Camisa 10"</p>
-          <p class="text-[11px] text-pitch flex items-center gap-1 justify-end"><i data-lucide="shield-check" class="w-3 h-3"></i> 4.9</p>
-        </div>
-        <div class="w-8 h-8 rounded-full bg-pitch text-paper flex items-center justify-center font-display text-xs">LC</div>
-      </button>
+      <div class="hidden md:flex items-center gap-3">
+        <button onclick="toggleTheme()" id="theme-toggle" class="w-9 h-9 rounded-full bg-paperdim hover:bg-line/60 flex items-center justify-center text-ink transition flex-shrink-0" title="Alternar tema claro/escuro">
+          <i data-lucide="moon" class="w-4 h-4" id="theme-icon"></i>
+        </button>
+        <button onclick="switchTab('cadastro')" id="tab-cadastro" class="font-display text-[12.5px] tracking-wide border border-pitch text-pitch px-4 py-2 rounded-full hover:bg-pitchtint transition flex items-center gap-1.5">
+          <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i> ANUNCIAR CAMPO
+        </button>
+        <button onclick="switchTab('perfil')" id="tab-perfil" class="flex items-center gap-2.5 bg-paperdim hover:bg-line/60 rounded-full pl-3 pr-1.5 py-1.5 transition">
+          <div class="text-right hidden sm:block leading-tight">
+            <p class="text-xs font-semibold text-ink" id="nav-user-name">Lucas "Camisa 10"</p>
+            <p class="text-[11px] text-pitch flex items-center gap-1 justify-end"><i data-lucide="shield-check" class="w-3 h-3"></i> 4.9</p>
+          </div>
+          <div class="w-8 h-8 rounded-full bg-pitch text-mist flex items-center justify-center font-display text-xs">LC</div>
+        </button>
+      </div>
     </div>
-    <div class="md:hidden flex justify-between px-5 pb-3 -mt-1 font-display text-[11px] tracking-wide text-inksoft overflow-x-auto gap-5">
+    <div class="md:hidden flex items-center justify-between px-5 pb-3 -mt-1 font-display text-[11px] tracking-wide text-inksoft overflow-x-auto gap-5">
       <button onclick="switchTab('reservas')">01 RESERVAR</button>
       <button onclick="switchTab('matchmaking')">02 TIME</button>
       <button onclick="switchTab('seguranca')">03 CONFIANÇA</button>
       <button onclick="switchTab('posjogo')">04 AVALIAR</button>
+      <button onclick="switchTab('cadastro')" class="text-pitch">+ ANUNCIAR</button>
+      <button onclick="toggleTheme()" class="w-6 h-6 rounded-full bg-paperdim flex items-center justify-center text-ink flex-shrink-0" title="Alternar tema">
+        <i data-lucide="moon" class="w-3.5 h-3.5" id="theme-icon-mobile"></i>
+      </button>
     </div>
   </header>
 
@@ -108,22 +167,23 @@
       <!-- HERO com imagem -->
       <div class="relative overflow-hidden">
         <img src="https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=1600&q=80" class="absolute inset-0 w-full h-full object-cover">
-        <div class="absolute inset-0 bg-gradient-to-r from-pitch/95 via-pitch/85 to-pitch/60"></div>
+        <div class="absolute inset-0 bg-pitch mix-blend-multiply opacity-90"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-void/70 via-void/35 to-void/10"></div>
         <div class="absolute inset-0 turf-dots"></div>
         <div class="relative max-w-6xl mx-auto px-5 pt-16 pb-14 grid md:grid-cols-3 gap-8 items-end">
-          <div class="md:col-span-2 text-paper">
-            <p class="font-display text-xs tracking-widest text-ambertint mb-2 flex items-center gap-2"><i data-lucide="map-pin" class="w-3.5 h-3.5"></i> CAMPOS E QUADRAS PRIVADAS</p>
+          <div class="md:col-span-2 text-mist">
+            <p class="font-display text-xs tracking-widest text-amber mb-2 flex items-center gap-2"><i data-lucide="map-pin" class="w-3.5 h-3.5"></i> CAMPOS E QUADRAS PRIVADAS</p>
             <h1 class="font-display text-4xl sm:text-5xl leading-[1.05]">Marque a quadra.<br>Divida a conta.</h1>
-            <p class="text-sm text-paper/80 mt-3 max-w-md">Preço varia por horário — pico custa mais, ocioso sai com desconto. O valor é rateado por Pix entre quem vai jogar.</p>
+            <p class="text-sm text-mist/80 mt-3 max-w-md">Preço varia por horário — pico custa mais, ocioso sai com desconto. O valor é rateado por Pix entre quem vai jogar.</p>
           </div>
           <div class="flex gap-4">
-            <div class="bg-paper/10 backdrop-blur border border-paper/20 rounded-2xl px-5 py-4 flex-1 text-paper">
+            <div class="bg-void/40 backdrop-blur border border-mist/20 rounded-2xl px-5 py-4 flex-1 text-mist">
               <p class="font-display text-2xl" id="stat-locais">5</p>
-              <p class="text-xs text-paper/70">locais em Salvador</p>
+              <p class="text-xs text-mist/70">locais em Salvador</p>
             </div>
-            <div class="bg-paper/10 backdrop-blur border border-paper/20 rounded-2xl px-5 py-4 flex-1 text-paper">
+            <div class="bg-void/40 backdrop-blur border border-mist/20 rounded-2xl px-5 py-4 flex-1 text-mist">
               <p class="font-display text-2xl">4.8</p>
-              <p class="text-xs text-paper/70">nota média</p>
+              <p class="text-xs text-mist/70">nota média</p>
             </div>
           </div>
         </div>
@@ -131,7 +191,7 @@
 
       <div class="max-w-6xl mx-auto px-5 py-10 space-y-8">
         <!-- FILTROS -->
-        <div class="bg-white rounded-2xl border border-line p-5 space-y-4 card">
+        <div class="bg-surface rounded-2xl border border-line p-5 space-y-4 card">
           <div class="flex items-baseline justify-between">
             <h2 class="font-display text-sm tracking-widest text-ink flex items-center gap-2"><i data-lucide="sliders-horizontal" class="w-4 h-4 text-pitch"></i> FILTRAR CAMPOS</h2>
             <button onclick="resetFilters()" class="text-xs text-inksoft hover:text-ink underline underline-offset-2">Limpar filtros</button>
@@ -168,7 +228,7 @@
         <div id="quadras-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
 
         <!-- POLÍTICA DE CANCELAMENTO -->
-        <div class="bg-white rounded-2xl border border-line p-6 grid sm:grid-cols-3 gap-6 card">
+        <div class="bg-surface rounded-2xl border border-line p-6 grid sm:grid-cols-3 gap-6 card">
           <div class="flex gap-3">
             <div class="w-9 h-9 rounded-full bg-pitchtint flex items-center justify-center flex-shrink-0"><i data-lucide="check" class="w-4 h-4 text-pitch"></i></div>
             <div>
@@ -198,13 +258,13 @@
     <section id="sec-matchmaking" class="hidden">
       <div class="bg-pitch relative overflow-hidden">
         <div class="absolute inset-0 turf-dots opacity-40"></div>
-        <div class="relative max-w-6xl mx-auto px-5 py-12 flex flex-col md:flex-row md:items-end justify-between gap-5 text-paper">
+        <div class="relative max-w-6xl mx-auto px-5 py-12 flex flex-col md:flex-row md:items-end justify-between gap-5 text-mist">
           <div>
-            <p class="font-display text-xs tracking-widest text-ambertint mb-2">MATCHMAKING</p>
+            <p class="font-display text-xs tracking-widest text-amber mb-2">MATCHMAKING</p>
             <h2 class="font-display text-3xl">Faltou gente pro baba?</h2>
-            <p class="text-sm text-paper/80 mt-2 max-w-md">Publique a vaga com a posição que falta. Times abrem para livre agente, nota mínima ou misto/feminino.</p>
+            <p class="text-sm text-mist/80 mt-2 max-w-md">Publique a vaga com a posição que falta. Times abrem para livre agente, nota mínima ou misto/feminino.</p>
           </div>
-          <button onclick="openModalCreateMatch()" class="font-display text-xs tracking-widest bg-amber text-ink px-5 py-3.5 rounded-full hover:brightness-95 transition whitespace-nowrap flex items-center gap-2"><i data-lucide="plus" class="w-4 h-4"></i> PUBLICAR VAGA</button>
+          <button onclick="openModalCreateMatch()" class="font-display text-xs tracking-widest bg-amber text-void px-5 py-3.5 rounded-full hover:brightness-95 transition whitespace-nowrap flex items-center gap-2"><i data-lucide="plus" class="w-4 h-4"></i> PUBLICAR VAGA</button>
         </div>
       </div>
 
@@ -217,7 +277,7 @@
           <div id="matches-list" class="space-y-4"></div>
         </div>
 
-        <div class="bg-white rounded-2xl border border-line p-5 space-y-4 h-fit card">
+        <div class="bg-surface rounded-2xl border border-line p-5 space-y-4 h-fit card">
           <h3 class="font-display text-sm tracking-widest text-ink flex items-center gap-2"><i data-lucide="trophy" class="w-4 h-4 text-gold"></i> RANKING LOCAL</h3>
           <div class="space-y-2" id="ranking-list"></div>
         </div>
@@ -233,17 +293,17 @@
       </div>
 
       <div class="grid sm:grid-cols-3 gap-5">
-        <div class="bg-white rounded-2xl border border-line p-5 space-y-3 card">
+        <div class="bg-surface rounded-2xl border border-line p-5 space-y-3 card">
           <div class="w-11 h-11 rounded-full bg-pitchtint flex items-center justify-center"><i data-lucide="fingerprint" class="w-5 h-5 text-pitch"></i></div>
           <p class="font-display text-ink tracking-wide">IDENTIDADE VALIDADA</p>
           <p class="text-inksoft text-xs leading-relaxed">CPF, telefone e foto de perfil são conferidos antes de liberar o acesso a babas abertos ao público.</p>
         </div>
-        <div class="bg-white rounded-2xl border border-line p-5 space-y-3 card">
+        <div class="bg-surface rounded-2xl border border-line p-5 space-y-3 card">
           <div class="w-11 h-11 rounded-full bg-ambertint flex items-center justify-center"><i data-lucide="vault" class="w-5 h-5 text-amber"></i></div>
           <p class="font-display text-ink tracking-wide">CUSTÓDIA PIX</p>
           <p class="text-inksoft text-xs leading-relaxed">A taxa do convidado fica retida no app e só é repassada ao organizador após o check-in confirmado.</p>
         </div>
-        <div class="bg-white rounded-2xl border border-line p-5 space-y-3 card">
+        <div class="bg-surface rounded-2xl border border-line p-5 space-y-3 card">
           <div class="w-11 h-11 rounded-full bg-pitchtint flex items-center justify-center"><i data-lucide="qr-code" class="w-5 h-5 text-pitch"></i></div>
           <p class="font-display text-ink tracking-wide">CHECK-IN POR QR CODE</p>
           <p class="text-inksoft text-xs leading-relaxed">A presença só é validada quando o organizador escaneia o código do jogador na entrada do campo.</p>
@@ -251,7 +311,7 @@
       </div>
 
       <div class="grid md:grid-cols-2 gap-6">
-        <div class="bg-white rounded-2xl border border-line p-6 space-y-4 card">
+        <div class="bg-surface rounded-2xl border border-line p-6 space-y-4 card">
           <p class="font-display text-sm tracking-widest text-ink flex items-center gap-2"><i data-lucide="activity" class="w-4 h-4 text-pitch"></i> SCORE DE ASSIDUIDADE</p>
           <p class="text-xs text-inksoft leading-relaxed">Toda partida gera uma nota de comparecimento e fair play. Furos sem aviso derrubam o score; quem fica abaixo de 3.5 perde prioridade nas vagas concorridas.</p>
           <div class="flex items-center justify-between text-xs bg-ambertint rounded-xl px-4 py-3">
@@ -263,13 +323,13 @@
             <span class="text-rust font-semibold">Bloqueio de 7 dias</span>
           </div>
         </div>
-        <div class="bg-pitch rounded-2xl p-6 space-y-4 text-paper relative overflow-hidden card">
+        <div class="bg-pitch rounded-2xl p-6 space-y-4 text-mist relative overflow-hidden card">
           <div class="absolute inset-0 turf-dots opacity-30"></div>
           <div class="relative space-y-3">
             <p class="font-display text-sm tracking-widest flex items-center gap-2"><i data-lucide="qr-code" class="w-4 h-4"></i> SEU QR CODE DE PRESENÇA</p>
-            <p class="text-xs text-paper/80">Próximo baba: hoje às 20h, Arena Gol de Placa.</p>
-            <div class="bg-paper rounded-xl p-4 inline-block">
-              <div class="w-28 h-28 bg-ink flex items-center justify-center text-paper font-display text-[10px] text-center p-2 rounded">
+            <p class="text-xs text-mist/80">Próximo baba: hoje às 20h, Arena Gol de Placa.</p>
+            <div class="bg-mist rounded-xl p-4 inline-block">
+              <div class="w-28 h-28 bg-void flex items-center justify-center text-mist font-display text-[10px] text-center p-2 rounded">
                 VOSSOBABA<br>#4921
               </div>
             </div>
@@ -280,7 +340,7 @@
 
     <!-- ============ TAB 4: AVALIAÇÃO ============ -->
     <section id="sec-posjogo" class="hidden max-w-6xl mx-auto px-5 py-12">
-      <div class="max-w-xl mx-auto bg-white rounded-2xl border border-line p-7 space-y-7 card">
+      <div class="max-w-xl mx-auto bg-surface rounded-2xl border border-line p-7 space-y-7 card">
         <div class="flex justify-between items-start pb-5 border-b border-line">
           <div>
             <p class="font-display text-xs tracking-widest text-pitch mb-1">AVALIAÇÃO PÓS-JOGO</p>
@@ -319,7 +379,7 @@
               <p class="text-sm text-ink font-medium">Faltou sem avisar?</p>
               <p class="text-xs text-inksoft">Registra furo e reduz o score de assiduidade dele.</p>
             </div>
-            <button onclick="reportFuro('Rodrigo Zagueiro')" class="text-xs font-display tracking-wide text-paper bg-rust rounded-full px-4 py-2.5 hover:brightness-105 transition whitespace-nowrap">DENUNCIAR FURO</button>
+            <button onclick="reportFuro('Rodrigo Zagueiro')" class="text-xs font-display tracking-wide text-mist bg-rust rounded-full px-4 py-2.5 hover:brightness-105 transition whitespace-nowrap">DENUNCIAR FURO</button>
           </div>
         </div>
 
@@ -332,7 +392,7 @@
           </select>
         </div>
 
-        <button onclick="submitEvaluation()" class="w-full bg-pitch hover:bg-pitchlight text-paper font-display tracking-widest text-sm py-3.5 rounded-xl transition">FINALIZAR AVALIAÇÃO</button>
+        <button onclick="submitEvaluation()" class="w-full bg-pitch hover:bg-pitchlight text-mist font-display tracking-widest text-sm py-3.5 rounded-xl transition">FINALIZAR AVALIAÇÃO</button>
       </div>
     </section>
 
@@ -340,30 +400,30 @@
     <section id="sec-perfil" class="hidden">
       <div class="bg-pitch relative overflow-hidden">
         <div class="absolute inset-0 turf-dots opacity-40"></div>
-        <div class="relative max-w-6xl mx-auto px-5 py-10 flex flex-col sm:flex-row gap-6 items-start text-paper">
-          <div class="w-16 h-16 rounded-full bg-amber text-ink flex items-center justify-center font-display text-xl flex-shrink-0">LC</div>
+        <div class="relative max-w-6xl mx-auto px-5 py-10 flex flex-col sm:flex-row gap-6 items-start text-mist">
+          <div class="w-16 h-16 rounded-full bg-amber text-void flex items-center justify-center font-display text-xl flex-shrink-0">LC</div>
           <div class="space-y-2 flex-grow">
             <div class="flex items-center gap-2 flex-wrap">
               <h2 class="font-display text-2xl" id="profile-name">Lucas "Camisa 10"</h2>
-              <span class="text-[11px] font-display tracking-wide bg-amber text-ink px-2.5 py-1 rounded-full">VIP PRO</span>
+              <span class="text-[11px] font-display tracking-wide bg-amber text-void px-2.5 py-1 rounded-full">VIP PRO</span>
             </div>
-            <p class="text-xs text-paper/80" id="profile-pos">Posição preferida: Meia-Atacante · Perna boa: direita</p>
-            <div class="flex gap-5 pt-1 text-xs text-paper/80 flex-wrap">
-              <span>Fair Play <b class="text-paper">4.9</b></span>
-              <span>Assiduidade <b class="text-paper">96%</b></span>
+            <p class="text-xs text-mist/80" id="profile-pos">Posição preferida: Meia-Atacante · Perna boa: direita</p>
+            <div class="flex gap-5 pt-1 text-xs text-mist/80 flex-wrap">
+              <span>Fair Play <b class="text-mist">4.9</b></span>
+              <span>Assiduidade <b class="text-mist">96%</b></span>
               <span>28 babas disputados</span>
             </div>
             <div class="flex gap-3 pt-1 text-[11px] flex-wrap">
-              <span class="bg-paper/15 rounded-full px-2.5 py-1 flex items-center gap-1"><i data-lucide="check" class="w-3 h-3"></i> CPF verificado</span>
-              <span class="bg-paper/15 rounded-full px-2.5 py-1 flex items-center gap-1"><i data-lucide="check" class="w-3 h-3"></i> Telefone verificado</span>
-              <span class="bg-paper/15 rounded-full px-2.5 py-1 flex items-center gap-1"><i data-lucide="check" class="w-3 h-3"></i> Foto verificada</span>
+              <span class="bg-mist/15 rounded-full px-2.5 py-1 flex items-center gap-1"><i data-lucide="check" class="w-3 h-3"></i> CPF verificado</span>
+              <span class="bg-mist/15 rounded-full px-2.5 py-1 flex items-center gap-1"><i data-lucide="check" class="w-3 h-3"></i> Telefone verificado</span>
+              <span class="bg-mist/15 rounded-full px-2.5 py-1 flex items-center gap-1"><i data-lucide="check" class="w-3 h-3"></i> Foto verificada</span>
             </div>
           </div>
         </div>
       </div>
 
       <div class="max-w-2xl mx-auto px-5 py-10">
-        <form onsubmit="saveProfile(event)" class="bg-white rounded-2xl border border-line p-7 space-y-6 card">
+        <form onsubmit="saveProfile(event)" class="bg-surface rounded-2xl border border-line p-7 space-y-6 card">
           <p class="font-display text-sm tracking-widest text-ink">EDITAR PERFIL</p>
           <div class="grid sm:grid-cols-2 gap-x-6 gap-y-5 text-sm">
             <label class="block">
@@ -410,7 +470,108 @@
             </div>
           </div>
 
-          <button type="submit" class="bg-pitch hover:bg-pitchlight text-paper font-display tracking-widest text-sm px-6 py-3.5 rounded-xl transition">SALVAR ALTERAÇÕES</button>
+          <button type="submit" class="bg-pitch hover:bg-pitchlight text-mist font-display tracking-widest text-sm px-6 py-3.5 rounded-xl transition">SALVAR ALTERAÇÕES</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- ============ TAB 6: CADASTRAR CAMPO (LADO ANFITRIÃO) ============ -->
+    <section id="sec-cadastro" class="hidden">
+      <div class="bg-pitch relative overflow-hidden">
+        <div class="absolute inset-0 turf-dots opacity-40"></div>
+        <div class="relative max-w-6xl mx-auto px-5 py-12 text-mist">
+          <p class="font-display text-xs tracking-widest text-amber mb-2 flex items-center gap-2"><i data-lucide="plus-circle" class="w-3.5 h-3.5"></i> SEJA UM ANFITRIÃO</p>
+          <h2 class="font-display text-3xl">Anuncie seu campo no VossoBaba</h2>
+          <p class="text-sm text-mist/80 mt-2 max-w-lg">Tem uma quadra, campo society ou espaço privado? Cadastre e comece a receber reservas com pagamento garantido por Pix Split.</p>
+        </div>
+      </div>
+
+      <div class="max-w-2xl mx-auto px-5 py-10">
+        <form onsubmit="submitNewQuadra(event)" class="bg-surface rounded-2xl border border-line p-7 space-y-6 card">
+
+          <div>
+            <p class="font-display text-sm tracking-widest text-ink mb-3">DADOS DO LOCAL</p>
+            <div class="grid sm:grid-cols-2 gap-x-6 gap-y-5 text-sm">
+              <label class="block sm:col-span-2">
+                <span class="block text-xs text-inksoft mb-1.5">Nome do campo</span>
+                <input type="text" id="cad-nome" required placeholder="Ex: Arena do Zé" class="w-full bg-paperdim rounded-xl px-3 py-2.5 outline-none focus:ring-2 focus:ring-pitch/30">
+              </label>
+              <label class="block">
+                <span class="block text-xs text-inksoft mb-1.5">Bairro</span>
+                <input type="text" id="cad-bairro" required placeholder="Ex: Rio Vermelho" class="w-full bg-paperdim rounded-xl px-3 py-2.5 outline-none focus:ring-2 focus:ring-pitch/30">
+              </label>
+              <label class="block">
+                <span class="block text-xs text-inksoft mb-1.5">Endereço</span>
+                <input type="text" id="cad-endereco" required placeholder="Rua, número" class="w-full bg-paperdim rounded-xl px-3 py-2.5 outline-none focus:ring-2 focus:ring-pitch/30">
+              </label>
+              <label class="block">
+                <span class="block text-xs text-inksoft mb-1.5">Telefone de contato</span>
+                <input type="text" id="cad-telefone" placeholder="(71) 90000-0000" class="w-full bg-paperdim rounded-xl px-3 py-2.5 outline-none focus:ring-2 focus:ring-pitch/30">
+              </label>
+              <label class="block">
+                <span class="block text-xs text-inksoft mb-1.5">Tipo de piso</span>
+                <select id="cad-piso" class="w-full bg-paperdim rounded-xl px-3 py-2.5 outline-none focus:ring-2 focus:ring-pitch/30">
+                  <option value="sintético">Sintético</option>
+                  <option value="parquet">Parquet (futsal)</option>
+                  <option value="areia">Areia / futevôlei</option>
+                </select>
+              </label>
+            </div>
+          </div>
+
+          <div>
+            <p class="font-display text-sm tracking-widest text-ink mb-3">MODELO DO ANÚNCIO</p>
+            <div class="grid grid-cols-2 gap-3 text-sm">
+              <label class="flex items-center gap-2 border border-line rounded-xl p-3 cursor-pointer has-[:checked]:border-pitch has-[:checked]:bg-pitchtint">
+                <input type="radio" name="cad-categoria" value="pago" checked onchange="toggleCadastroCategoria()"> Privado pago
+              </label>
+              <label class="flex items-center gap-2 border border-line rounded-xl p-3 cursor-pointer has-[:checked]:border-pitch has-[:checked]:bg-pitchtint">
+                <input type="radio" name="cad-categoria" value="cedido" onchange="toggleCadastroCategoria()"> Cedido / grátis
+              </label>
+            </div>
+          </div>
+
+          <div id="cad-horarios-wrap" class="space-y-3">
+            <p class="font-display text-sm tracking-widest text-ink">HORÁRIOS E PREÇOS</p>
+            <p class="text-xs text-inksoft">Cadastre pelo menos um horário. Marque se é horário de pico (mais caro) ou ocioso (com desconto automático).</p>
+            <div id="cad-horarios-list" class="space-y-2"></div>
+            <button type="button" onclick="addHorarioRow()" class="text-xs font-display tracking-wide text-pitch border border-pitch px-3 py-2 rounded-full hover:bg-pitchtint transition flex items-center gap-1.5"><i data-lucide="plus" class="w-3.5 h-3.5"></i> ADICIONAR HORÁRIO</button>
+          </div>
+
+          <div>
+            <p class="font-display text-sm tracking-widest text-ink mb-3">COMODIDADES</p>
+            <div class="flex flex-wrap gap-2 text-xs">
+              <label class="flex items-center gap-1.5 bg-paperdim px-3 py-1.5 rounded-full cursor-pointer has-[:checked]:bg-pitch has-[:checked]:text-mist">
+                <input type="checkbox" value="iluminacao" class="cad-amenity hidden"> <i data-lucide="lightbulb" class="w-3.5 h-3.5"></i> Iluminação noturna
+              </label>
+              <label class="flex items-center gap-1.5 bg-paperdim px-3 py-1.5 rounded-full cursor-pointer has-[:checked]:bg-pitch has-[:checked]:text-mist">
+                <input type="checkbox" value="vestiario" class="cad-amenity hidden"> <i data-lucide="shirt" class="w-3.5 h-3.5"></i> Vestiário
+              </label>
+              <label class="flex items-center gap-1.5 bg-paperdim px-3 py-1.5 rounded-full cursor-pointer has-[:checked]:bg-pitch has-[:checked]:text-mist">
+                <input type="checkbox" value="churrasqueira" class="cad-amenity hidden"> <i data-lucide="flame" class="w-3.5 h-3.5"></i> Churrasqueira
+              </label>
+              <label class="flex items-center gap-1.5 bg-paperdim px-3 py-1.5 rounded-full cursor-pointer has-[:checked]:bg-pitch has-[:checked]:text-mist">
+                <input type="checkbox" value="estacionamento" class="cad-amenity hidden"> <i data-lucide="car" class="w-3.5 h-3.5"></i> Estacionamento
+              </label>
+            </div>
+          </div>
+
+          <div>
+            <p class="font-display text-sm tracking-widest text-ink mb-3">FOTOS DO CAMPO</p>
+            <label class="flex flex-col items-center justify-center gap-2 border-2 border-dashed border-line rounded-xl p-6 cursor-pointer hover:border-pitch transition text-center">
+              <i data-lucide="image-plus" class="w-6 h-6 text-inksoft"></i>
+              <span class="text-xs text-inksoft">Clique para enviar até 3 fotos reais do local</span>
+              <input type="file" id="cad-fotos" accept="image/*" multiple class="hidden" onchange="previewCadastroFotos(event)">
+            </label>
+            <div id="cad-fotos-preview" class="flex gap-2 mt-3 flex-wrap"></div>
+          </div>
+
+          <div class="bg-ambertint rounded-xl p-3 flex gap-2 text-[11px] text-inksoft">
+            <i data-lucide="shield-check" class="w-4 h-4 text-amber flex-shrink-0 mt-0.5"></i>
+            <span>Todo campo passa por uma checagem básica de identidade do anfitrião antes de ficar visível publicamente na busca.</span>
+          </div>
+
+          <button type="submit" class="w-full bg-pitch hover:bg-pitchlight text-mist font-display tracking-widest text-sm py-3.5 rounded-xl transition flex items-center justify-center gap-2"><i data-lucide="check" class="w-4 h-4"></i> PUBLICAR CAMPO</button>
         </form>
       </div>
     </section>
@@ -425,8 +586,8 @@
   </footer>
 
   <!-- MODAL: PIX SPLIT -->
-  <div id="modal-split" class="fixed inset-0 bg-ink/60 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
-    <div class="bg-paper w-full max-w-md p-7 space-y-5 rounded-2xl shadow-2xl">
+  <div id="modal-split" class="fixed inset-0 bg-void/60 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
+    <div class="bg-surface w-full max-w-md p-7 space-y-5 rounded-2xl shadow-2xl">
       <div class="flex justify-between items-start border-b border-line pb-4">
         <div>
           <p class="text-[11px] font-display tracking-widest text-pitch">DIVISÃO INTELIGENTE</p>
@@ -457,7 +618,7 @@
             <span id="split-per-val">R$ 0,00</span>
           </div>
           <div class="pt-1">
-            <div class="h-2 bg-white/70 rounded-full overflow-hidden">
+            <div class="h-2 bg-mist/20 rounded-full overflow-hidden">
               <div class="h-full bg-pitch rounded-full" style="width:55%"></div>
             </div>
             <p class="text-[11px] text-inksoft mt-1">55% arrecadado · confirma automático ao atingir 80%</p>
@@ -470,13 +631,13 @@
         </div>
       </div>
 
-      <button onclick="confirmPixSplit()" class="w-full bg-pitch hover:bg-pitchlight text-paper font-display tracking-widest text-sm py-3.5 rounded-xl transition flex items-center justify-center gap-2"><i data-lucide="share-2" class="w-4 h-4"></i> GERAR LINK PIX NO GRUPO</button>
+      <button onclick="confirmPixSplit()" class="w-full bg-pitch hover:bg-pitchlight text-mist font-display tracking-widest text-sm py-3.5 rounded-xl transition flex items-center justify-center gap-2"><i data-lucide="share-2" class="w-4 h-4"></i> GERAR LINK PIX NO GRUPO</button>
     </div>
   </div>
 
   <!-- MODAL: POSICIONAMENTO -->
-  <div id="modal-tactical" class="fixed inset-0 bg-ink/60 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
-    <div class="bg-paper w-full max-w-md p-7 space-y-5 rounded-2xl shadow-2xl">
+  <div id="modal-tactical" class="fixed inset-0 bg-void/60 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
+    <div class="bg-surface w-full max-w-md p-7 space-y-5 rounded-2xl shadow-2xl">
       <div class="flex justify-between items-start border-b border-line pb-4">
         <div>
           <p class="text-[11px] font-display tracking-widest text-pitch">CHECKOUT</p>
@@ -486,23 +647,23 @@
       </div>
 
       <div class="pitch-lines bg-pitch rounded-2xl h-64 relative flex flex-col justify-between p-4">
-        <div class="w-24 h-5 border-2 border-paper/40 mx-auto border-t-0 rounded-b"></div>
+        <div class="w-24 h-5 border-2 border-mist/40 mx-auto border-t-0 rounded-b"></div>
         <div class="grid grid-cols-3 gap-2 text-center text-xs font-display tracking-wide my-auto">
-          <button onclick="confirmPosition('Ataque / Pivô')" class="bg-paper/10 hover:bg-amber hover:text-ink text-paper border border-paper/25 py-3 rounded-lg transition">ATAQUE</button>
-          <button onclick="confirmPosition('Meio-Campo')" class="bg-paper/10 hover:bg-amber hover:text-ink text-paper border border-paper/25 py-3 rounded-lg transition">MEIO</button>
-          <button onclick="confirmPosition('Zagueiro / Fixo')" class="bg-paper/10 hover:bg-amber hover:text-ink text-paper border border-paper/25 py-3 rounded-lg transition">ZAGA</button>
+          <button onclick="confirmPosition('Ataque / Pivô')" class="bg-mist/10 hover:bg-amber hover:text-void text-mist border border-mist/25 py-3 rounded-lg transition">ATAQUE</button>
+          <button onclick="confirmPosition('Meio-Campo')" class="bg-mist/10 hover:bg-amber hover:text-void text-mist border border-mist/25 py-3 rounded-lg transition">MEIO</button>
+          <button onclick="confirmPosition('Zagueiro / Fixo')" class="bg-mist/10 hover:bg-amber hover:text-void text-mist border border-mist/25 py-3 rounded-lg transition">ZAGA</button>
         </div>
         <div class="text-center space-y-2">
-          <button onclick="confirmPosition('Goleiro (Grátis)')" class="bg-amber hover:brightness-95 text-ink font-display text-xs tracking-wide px-4 py-2.5 rounded-full transition">🧤 GOLEIRO — ISENTO DE TAXA</button>
-          <div class="w-24 h-5 border-2 border-paper/40 mx-auto border-b-0 rounded-t"></div>
+          <button onclick="confirmPosition('Goleiro (Grátis)')" class="bg-amber hover:brightness-95 text-void font-display text-xs tracking-wide px-4 py-2.5 rounded-full transition">🧤 GOLEIRO — ISENTO DE TAXA</button>
+          <div class="w-24 h-5 border-2 border-mist/40 mx-auto border-b-0 rounded-t"></div>
         </div>
       </div>
     </div>
   </div>
 
   <!-- MODAL: CRIAR BABA -->
-  <div id="modal-create-match" class="fixed inset-0 bg-ink/60 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
-    <div class="bg-paper w-full max-w-md p-7 space-y-5 rounded-2xl shadow-2xl">
+  <div id="modal-create-match" class="fixed inset-0 bg-void/60 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
+    <div class="bg-surface w-full max-w-md p-7 space-y-5 rounded-2xl shadow-2xl">
       <div class="flex justify-between items-start border-b border-line pb-4">
         <h3 class="font-display text-xl text-ink">Publicar vaga</h3>
         <button onclick="closeModal('modal-create-match')" class="w-8 h-8 rounded-full bg-paperdim flex items-center justify-center text-inksoft hover:text-ink"><i data-lucide="x" class="w-4 h-4"></i></button>
@@ -536,17 +697,17 @@
           </select>
         </label>
 
-        <button type="submit" class="w-full bg-pitch hover:bg-pitchlight text-paper font-display tracking-widest text-sm py-3.5 rounded-xl transition">PUBLICAR VAGA</button>
+        <button type="submit" class="w-full bg-pitch hover:bg-pitchlight text-mist font-display tracking-widest text-sm py-3.5 rounded-xl transition">PUBLICAR VAGA</button>
       </form>
     </div>
   </div>
 
   <!-- MODAL: DETALHES DO CAMPO -->
-  <div id="modal-detail" class="fixed inset-0 bg-ink/60 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
-    <div class="bg-paper w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl shadow-2xl">
+  <div id="modal-detail" class="fixed inset-0 bg-void/60 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
+    <div class="bg-surface w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl shadow-2xl">
       <div class="relative">
         <img id="detail-main-photo" src="" class="w-full h-64 sm:h-80 object-cover rounded-t-2xl">
-        <button onclick="closeModal('modal-detail')" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-ink/70 flex items-center justify-center text-paper hover:bg-ink"><i data-lucide="x" class="w-4 h-4"></i></button>
+        <button onclick="closeModal('modal-detail')" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-void/70 flex items-center justify-center text-mist hover:bg-void"><i data-lucide="x" class="w-4 h-4"></i></button>
         <div id="detail-badge" class="absolute top-4 left-4"></div>
       </div>
       <div id="detail-thumbs" class="flex gap-2 px-6 pt-4"></div>
@@ -582,7 +743,7 @@
           <span>Cancelamento livre até 24h antes; entre 24h e 6h reembolso de 50%; sem aviso ou menos de 6h, sem reembolso.</span>
         </div>
 
-        <button id="detail-cta" class="w-full text-paper font-display tracking-widest text-sm py-3.5 rounded-xl transition flex items-center justify-center gap-2"></button>
+        <button id="detail-cta" class="w-full text-mist font-display tracking-widest text-sm py-3.5 rounded-xl transition flex items-center justify-center gap-2"></button>
       </div>
     </div>
   </div>
@@ -681,6 +842,22 @@
     let activeAmenities = new Set();
     let selectedQuadra = null;
     let selectedRating = 5;
+    let isLightTheme = false;
+
+    function toggleTheme() {
+      isLightTheme = !isLightTheme;
+      if (isLightTheme) {
+        document.documentElement.setAttribute('data-theme', 'light');
+      } else {
+        document.documentElement.removeAttribute('data-theme');
+      }
+      const iconName = isLightTheme ? 'sun' : 'moon';
+      const icon1 = document.getElementById('theme-icon');
+      const icon2 = document.getElementById('theme-icon-mobile');
+      if (icon1) icon1.setAttribute('data-lucide', iconName);
+      if (icon2) icon2.setAttribute('data-lucide', iconName);
+      lucide.createIcons();
+    }
 
     window.onload = () => {
       lucide.createIcons();
@@ -697,15 +874,33 @@
     }
 
     function switchTab(tabId) {
-      const tabs = ['reservas', 'matchmaking', 'seguranca', 'posjogo', 'perfil'];
-      tabs.forEach(t => {
-        document.getElementById(`sec-${t}`).classList.add('hidden');
+      const allSections = ['reservas', 'matchmaking', 'seguranca', 'posjogo', 'perfil', 'cadastro'];
+      allSections.forEach(t => document.getElementById(`sec-${t}`).classList.add('hidden'));
+      document.getElementById(`sec-${tabId}`).classList.remove('hidden');
+
+      const pillTabs = ['reservas', 'matchmaking', 'seguranca', 'posjogo'];
+      pillTabs.forEach(t => {
         const btn = document.getElementById(`tab-${t}`);
         if (btn) btn.className = "px-4 py-2 rounded-full text-inksoft transition";
       });
-      document.getElementById(`sec-${tabId}`).classList.remove('hidden');
-      const activeBtn = document.getElementById(`tab-${tabId}`);
-      if (activeBtn && tabId !== 'perfil') activeBtn.classList.add('step-active');
+      if (pillTabs.includes(tabId)) document.getElementById(`tab-${tabId}`).className = "px-4 py-2 rounded-full bg-pitch text-mist font-semibold transition";
+
+      const cadastroBtn = document.getElementById('tab-cadastro');
+      if (cadastroBtn) {
+        if (tabId === 'cadastro') {
+          cadastroBtn.classList.remove('text-pitch');
+          cadastroBtn.classList.add('bg-pitch', 'text-mist');
+        } else {
+          cadastroBtn.classList.remove('bg-pitch', 'text-mist');
+          cadastroBtn.classList.add('text-pitch');
+        }
+      }
+
+      if (tabId === 'cadastro' && document.getElementById('cad-horarios-list').children.length === 0) {
+        addHorarioRow();
+        addHorarioRow();
+      }
+
       lucide.createIcons();
     }
 
@@ -729,13 +924,13 @@
 
         let badgeHtml = '';
         if (q.categoria === 'cedido') badgeHtml = `<span class="bg-blue-500 text-white text-[10px] font-bold px-2.5 py-1 rounded-full">Privado cedido</span>`;
-        else if (q.horarios.some(h => h.tipo === 'ocioso')) badgeHtml = `<span class="bg-pitch text-paper text-[10px] font-bold px-2.5 py-1 rounded-full">Desconto ocioso</span>`;
+        else if (q.horarios.some(h => h.tipo === 'ocioso')) badgeHtml = `<span class="bg-pitch text-mist text-[10px] font-bold px-2.5 py-1 rounded-full">Desconto ocioso</span>`;
         else badgeHtml = `<span class="bg-rust text-white text-[10px] font-bold px-2.5 py-1 rounded-full">Alta demanda</span>`;
 
         const amenitiesHtml = q.amenities.map(a => `<span class="text-[10px] text-inksoft bg-paperdim px-2 py-1 rounded-full flex items-center gap-1"><i data-lucide="${amenityIcons[a]}" class="w-3 h-3"></i>${amenityLabels[a]}</span>`).join(' ');
 
         grid.innerHTML += `
-          <div class="bg-white rounded-2xl border border-line overflow-hidden card flex flex-col cursor-pointer" onclick='openModalDetail(${JSON.stringify(q)})'>
+          <div class="bg-surface rounded-2xl border border-line overflow-hidden card flex flex-col cursor-pointer" onclick='openModalDetail(${JSON.stringify(q)})'>
             <div class="relative h-40">
               <img src="${q.fotos[0]}" class="w-full h-full object-cover">
               <div class="absolute top-3 right-3">${badgeHtml}</div>
@@ -744,7 +939,7 @@
               <div>
                 <div class="flex justify-between items-start">
                   <h3 class="font-display text-base text-ink leading-tight">${q.nome}</h3>
-                  <span class="text-xs text-amber font-semibold flex items-center gap-0.5 flex-shrink-0"><i data-lucide="star" class="w-3.5 h-3.5 fill-amber"></i>${q.rating}</span>
+                  <span class="text-xs text-amber font-semibold flex items-center gap-0.5 flex-shrink-0">${q.rating > 0 ? `<i data-lucide="star" class="w-3.5 h-3.5 fill-amber"></i>${q.rating}` : `<span class="text-pitch">Novo</span>`}</span>
                 </div>
                 <p class="text-xs text-inksoft mt-0.5">${q.bairro} · ${q.recursos}</p>
                 <p class="text-[11px] text-inksoft mt-1 flex items-center gap-1">
@@ -770,11 +965,11 @@
       const a = btn.dataset.amenity;
       if (activeAmenities.has(a)) {
         activeAmenities.delete(a);
-        btn.classList.remove('bg-pitch', 'text-paper');
+        btn.classList.remove('bg-pitch', 'text-mist');
         btn.classList.add('bg-paperdim', 'text-inksoft');
       } else {
         activeAmenities.add(a);
-        btn.classList.add('bg-pitch', 'text-paper');
+        btn.classList.add('bg-pitch', 'text-mist');
         btn.classList.remove('bg-paperdim', 'text-inksoft');
       }
       applyFilters();
@@ -801,7 +996,7 @@
       document.getElementById('filter-categoria').value = 'todas';
       activeAmenities.clear();
       document.querySelectorAll('.amenity-chip').forEach(b => {
-        b.classList.remove('bg-pitch', 'text-paper');
+        b.classList.remove('bg-pitch', 'text-mist');
         b.classList.add('bg-paperdim', 'text-inksoft');
       });
       renderQuadras(quadrasData);
@@ -813,7 +1008,7 @@
       list.innerHTML = '';
       matchesData.forEach(m => {
         list.innerHTML += `
-          <div class="bg-white rounded-2xl border border-line p-5 card flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div class="bg-surface rounded-2xl border border-line p-5 card flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div class="space-y-1.5">
               <div class="flex items-center gap-2 flex-wrap">
                 <span class="text-[10px] font-display tracking-wide bg-ambertint text-amber px-2.5 py-1 rounded-full">${m.nivel.toUpperCase()}</span>
@@ -824,7 +1019,7 @@
             </div>
             <div class="flex items-center gap-4 flex-shrink-0">
               <span class="font-display text-base text-pitch">${m.preco}</span>
-              <button onclick="openModalTactical()" class="font-display text-xs tracking-wide bg-pitch text-paper px-4 py-2.5 rounded-full hover:bg-pitchlight transition whitespace-nowrap">ESCOLHER POSIÇÃO</button>
+              <button onclick="openModalTactical()" class="font-display text-xs tracking-wide bg-pitch text-mist px-4 py-2.5 rounded-full hover:bg-pitchlight transition whitespace-nowrap">ESCOLHER POSIÇÃO</button>
             </div>
           </div>
         `;
@@ -859,7 +1054,7 @@
 
       document.getElementById('detail-main-photo').src = q.fotos[0];
       document.getElementById('detail-nome').innerText = q.nome;
-      document.getElementById('detail-rating').innerText = q.rating;
+      document.getElementById('detail-rating').innerText = q.rating > 0 ? q.rating : 'Novo';
       document.getElementById('detail-recursos').innerText = q.recursos;
       document.getElementById('detail-endereco').innerText = q.endereco + ' ·';
       document.getElementById('detail-bairro').innerText = q.bairro;
@@ -871,7 +1066,7 @@
 
       let badgeHtml = '';
       if (q.categoria === 'cedido') badgeHtml = `<span class="bg-blue-500 text-white text-[10px] font-bold px-2.5 py-1 rounded-full">Privado cedido</span>`;
-      else if (q.horarios.some(h => h.tipo === 'ocioso')) badgeHtml = `<span class="bg-pitch text-paper text-[10px] font-bold px-2.5 py-1 rounded-full">Desconto ocioso</span>`;
+      else if (q.horarios.some(h => h.tipo === 'ocioso')) badgeHtml = `<span class="bg-pitch text-mist text-[10px] font-bold px-2.5 py-1 rounded-full">Desconto ocioso</span>`;
       else badgeHtml = `<span class="bg-rust text-white text-[10px] font-bold px-2.5 py-1 rounded-full">Alta demanda</span>`;
       document.getElementById('detail-badge').innerHTML = badgeHtml;
 
@@ -893,7 +1088,7 @@
         cta.innerHTML = `<i data-lucide="qr-code" class="w-4 h-4"></i> CHECK-IN & QR CODE`;
         cta.onclick = () => { closeModal('modal-detail'); showToast('Acesso solicitado. QR Code de entrada liberado.'); };
       } else {
-        cta.className = "w-full bg-pitch hover:bg-pitchlight text-paper font-display tracking-widest text-sm py-3.5 rounded-xl transition flex items-center justify-center gap-2";
+        cta.className = "w-full bg-pitch hover:bg-pitchlight text-mist font-display tracking-widest text-sm py-3.5 rounded-xl transition flex items-center justify-center gap-2";
         cta.innerHTML = `<i data-lucide="credit-card" class="w-4 h-4"></i> RESERVAR & DIVIDIR`;
         cta.onclick = () => { closeModal('modal-detail'); openModalSplit(q); };
       }
@@ -968,7 +1163,7 @@
 
     function toggleTag(btn) {
       btn.classList.toggle('bg-pitch');
-      btn.classList.toggle('text-paper');
+      btn.classList.toggle('text-mist');
       btn.classList.toggle('bg-paperdim');
       btn.classList.toggle('text-inksoft');
     }
@@ -990,6 +1185,85 @@
       document.getElementById('nav-user-name').innerText = name;
       document.getElementById('profile-pos').innerText = `Posição preferida: ${pos}`;
       showToast('Perfil atualizado com sucesso.');
+    }
+
+    // ===== CADASTRAR CAMPO (lado anfitrião) =====
+    let horarioRowCount = 0;
+    let cadastroFotos = [];
+
+    function addHorarioRow() {
+      horarioRowCount++;
+      const id = horarioRowCount;
+      const wrap = document.createElement('div');
+      wrap.id = `horario-row-${id}`;
+      wrap.className = 'grid grid-cols-[1fr_auto_auto_auto] gap-2 items-center';
+      wrap.innerHTML = `
+        <input type="text" placeholder="Ex: 19h – 21h" class="cad-hora bg-paperdim rounded-xl px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-pitch/30">
+        <input type="number" placeholder="R$" min="0" class="cad-preco bg-paperdim rounded-xl px-3 py-2 text-sm w-24 outline-none focus:ring-2 focus:ring-pitch/30">
+        <select class="cad-tipo bg-paperdim rounded-xl px-2 py-2 text-xs outline-none focus:ring-2 focus:ring-pitch/30">
+          <option value="normal">Normal</option>
+          <option value="pico">Pico</option>
+          <option value="ocioso">Ocioso</option>
+        </select>
+        <button type="button" onclick="document.getElementById('horario-row-${id}').remove()" class="w-8 h-8 rounded-full bg-paperdim hover:bg-rusttint flex items-center justify-center text-inksoft hover:text-rust"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
+      `;
+      document.getElementById('cad-horarios-list').appendChild(wrap);
+      lucide.createIcons();
+    }
+
+    function toggleCadastroCategoria() {
+      const cedido = document.querySelector('input[name="cad-categoria"]:checked').value === 'cedido';
+      document.getElementById('cad-horarios-wrap').style.display = cedido ? 'none' : 'block';
+    }
+
+    function previewCadastroFotos(e) {
+      const files = Array.from(e.target.files).slice(0, 3);
+      cadastroFotos = files.map(f => URL.createObjectURL(f));
+      const preview = document.getElementById('cad-fotos-preview');
+      preview.innerHTML = cadastroFotos.map(url => `<img src="${url}" class="w-20 h-20 object-cover rounded-lg border border-line">`).join('');
+    }
+
+    function submitNewQuadra(e) {
+      e.preventDefault();
+      const categoria = document.querySelector('input[name="cad-categoria"]:checked').value;
+      const amenities = Array.from(document.querySelectorAll('.cad-amenity:checked')).map(el => el.value);
+
+      let horarios = [];
+      if (categoria === 'pago') {
+        document.querySelectorAll('#cad-horarios-list > div').forEach(row => {
+          const hora = row.querySelector('.cad-hora').value;
+          const preco = parseFloat(row.querySelector('.cad-preco').value) || 0;
+          const tipo = row.querySelector('.cad-tipo').value;
+          if (hora) horarios.push({ hora, preco, tipo });
+        });
+        if (horarios.length === 0) { showToast('Adicione ao menos um horário com preço.'); return; }
+      } else {
+        horarios = [{ hora: "Consultar disponibilidade", preco: 0, tipo: "normal" }];
+      }
+
+      const fallbackFoto = "https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=1200&q=80";
+      const fotos = cadastroFotos.length > 0 ? cadastroFotos : [fallbackFoto];
+
+      const novaQuadra = {
+        id: Date.now(),
+        nome: document.getElementById('cad-nome').value,
+        bairro: document.getElementById('cad-bairro').value,
+        endereco: document.getElementById('cad-endereco').value,
+        telefone: document.getElementById('cad-telefone').value || null,
+        piso: document.getElementById('cad-piso').value,
+        categoria,
+        fotos,
+        rating: 0,
+        recursos: "Anúncio novo · em análise de identidade",
+        amenities,
+        mapsUrl: null,
+        horarios
+      };
+
+      quadrasData.unshift(novaQuadra);
+      resetFilters();
+      switchTab('reservas');
+      showToast('Campo cadastrado! Ele já aparece na busca, com selo de anúncio novo.');
     }
   </script>
 </body>
