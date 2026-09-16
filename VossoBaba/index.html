@@ -129,6 +129,7 @@
         <button onclick="switchTab('matchmaking')" id="tab-matchmaking" class="px-4 py-2 rounded-full text-inksoft transition">02 · MONTAR TIME</button>
         <button onclick="switchTab('seguranca')" id="tab-seguranca" class="px-4 py-2 rounded-full text-inksoft transition">03 · CONFIANÇA</button>
         <button onclick="switchTab('posjogo')" id="tab-posjogo" class="px-4 py-2 rounded-full text-inksoft transition">04 · AVALIAR</button>
+        <button onclick="switchTab('meusbabas')" id="tab-meusbabas" class="px-4 py-2 rounded-full text-inksoft transition">05 · MEUS BABAS</button>
       </nav>
 
       <div class="hidden md:flex items-center gap-3">
@@ -152,6 +153,7 @@
       <button onclick="switchTab('matchmaking')">02 TIME</button>
       <button onclick="switchTab('seguranca')">03 CONFIANÇA</button>
       <button onclick="switchTab('posjogo')">04 AVALIAR</button>
+      <button onclick="switchTab('meusbabas')">05 MEUS BABAS</button>
       <button onclick="switchTab('cadastro')" class="text-pitch">+ ANUNCIAR</button>
       <button onclick="toggleTheme()" class="w-6 h-6 rounded-full bg-paperdim flex items-center justify-center text-ink flex-shrink-0" title="Alternar tema">
         <i data-lucide="moon" class="w-3.5 h-3.5" id="theme-icon-mobile"></i>
@@ -277,9 +279,21 @@
           <div id="matches-list" class="space-y-4"></div>
         </div>
 
-        <div class="bg-surface rounded-2xl border border-line p-5 space-y-4 h-fit card">
-          <h3 class="font-display text-sm tracking-widest text-ink flex items-center gap-2"><i data-lucide="trophy" class="w-4 h-4 text-gold"></i> RANKING LOCAL</h3>
-          <div class="space-y-2" id="ranking-list"></div>
+        <div class="space-y-5">
+          <div class="bg-surface rounded-2xl border border-line p-5 space-y-4 h-fit card">
+            <h3 class="font-display text-sm tracking-widest text-ink flex items-center gap-2"><i data-lucide="trophy" class="w-4 h-4 text-gold"></i> RANKING LOCAL</h3>
+            <div class="space-y-2" id="ranking-list"></div>
+          </div>
+
+          <div class="bg-surface rounded-2xl border border-line p-5 space-y-3 card">
+            <h3 class="font-display text-sm tracking-widest text-ink flex items-center gap-2"><i data-lucide="clock-alert" class="w-4 h-4 text-amber"></i> TOLERÂNCIA ZERO</h3>
+            <p class="text-xs text-inksoft leading-relaxed">Check-in por QR Code até <b class="text-ink">10 minutos antes</b> do jogo. Sem check-in nesse prazo, a vaga abre automaticamente para a fila de espera.</p>
+            <div class="border-t border-line pt-3 space-y-2">
+              <p class="text-xs font-display tracking-wide text-ink">FILA DE ESPERA</p>
+              <div id="waitlist-preview" class="space-y-1.5"></div>
+              <p class="text-[11px] text-inksoft pt-1">Se alguém desistir, o próximo da fila é chamado e a cota é cobrada via Pix na hora — sem precisar "adular" ninguém no grupo.</p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -352,6 +366,7 @@
 
         <div class="space-y-5">
           <p class="font-display text-sm tracking-widest text-ink">AVALIAR ATLETA — Rodrigo "Zagueiro"</p>
+          <p class="text-xs text-inksoft -mt-3">Considera pontualidade, espírito esportivo e nível técnico real.</p>
 
           <div class="flex items-center justify-between">
             <span class="text-xs text-inksoft">Nota geral</span>
@@ -369,6 +384,7 @@
             <p class="text-xs text-inksoft">Conceder destaque</p>
             <div class="flex gap-2 flex-wrap">
               <button onclick="toggleTag(this)" class="tag-btn text-xs px-3 py-1.5 bg-paperdim rounded-full text-inksoft transition">🛡️ Joga limpo</button>
+              <button onclick="toggleTag(this)" class="tag-btn text-xs px-3 py-1.5 bg-paperdim rounded-full text-inksoft transition">🧤 Goleiro de confiança</button>
               <button onclick="toggleTag(this)" class="tag-btn text-xs px-3 py-1.5 bg-paperdim rounded-full text-inksoft transition">⚡ Raça puro sangue</button>
               <button onclick="toggleTag(this)" class="tag-btn text-xs px-3 py-1.5 bg-paperdim rounded-full text-inksoft transition">⏱️ Pontual</button>
             </div>
@@ -381,6 +397,12 @@
             </div>
             <button onclick="reportFuro('Rodrigo Zagueiro')" class="text-xs font-display tracking-wide text-mist bg-rust rounded-full px-4 py-2.5 hover:brightness-105 transition whitespace-nowrap">DENUNCIAR FURO</button>
           </div>
+        </div>
+
+        <div class="border-t border-line pt-5 space-y-3">
+          <p class="font-display text-sm tracking-widest text-ink flex items-center gap-2"><i data-lucide="sparkles" class="w-4 h-4 text-amber"></i> DESTAQUES DA PARTIDA</p>
+          <p class="text-xs text-inksoft -mt-2">Eleitos pelo grupo — aparecem no perfil de quem ganhar.</p>
+          <div class="grid grid-cols-2 gap-3 text-sm" id="destaques-partida"></div>
         </div>
 
         <div class="border-t border-line pt-5 space-y-2">
@@ -396,7 +418,26 @@
       </div>
     </section>
 
-    <!-- ============ TAB 5: PERFIL ============ -->
+    <!-- ============ TAB 5: MEUS BABAS ============ -->
+    <section id="sec-meusbabas" class="hidden">
+      <div class="bg-pitch relative overflow-hidden">
+        <div class="absolute inset-0 turf-dots opacity-40"></div>
+        <div class="relative max-w-6xl mx-auto px-5 py-12 flex flex-col md:flex-row md:items-end justify-between gap-5 text-mist">
+          <div>
+            <p class="font-display text-xs tracking-widest text-amber mb-2">GESTÃO DE BABAS</p>
+            <h2 class="font-display text-3xl">Seus babas organizados</h2>
+            <p class="text-sm text-mist/80 mt-2 max-w-md">Acompanhe o caixa, sorteie os times ou cancele os babas que você criou.</p>
+          </div>
+          <button onclick="openModalCreateMatch()" class="font-display text-xs tracking-widest bg-amber text-void px-5 py-3.5 rounded-full hover:brightness-95 transition whitespace-nowrap flex items-center gap-2"><i data-lucide="plus" class="w-4 h-4"></i> NOVO BABA</button>
+        </div>
+      </div>
+
+      <div class="max-w-2xl mx-auto px-5 py-10">
+        <div id="my-babas-list" class="space-y-3"></div>
+      </div>
+    </section>
+
+    <!-- ============ TAB 6: PERFIL ============ -->
     <section id="sec-perfil" class="hidden">
       <div class="bg-pitch relative overflow-hidden">
         <div class="absolute inset-0 turf-dots opacity-40"></div>
@@ -608,6 +649,11 @@
           <input type="number" id="split-count" value="12" min="1" max="22" oninput="recalculateSplit()" class="w-full bg-paperdim rounded-xl px-3 py-2.5 outline-none focus:ring-2 focus:ring-pitch/30 font-display text-base">
         </div>
 
+        <label class="flex items-start gap-2.5 bg-pitchtint rounded-xl p-3 cursor-pointer">
+          <input type="checkbox" id="split-goleiro-gratis" onchange="recalculateSplit()" class="mt-0.5">
+          <span class="text-xs text-ink"><b>Cota zero para o goleiro</b><br><span class="text-inksoft">O valor da vaga dele é redistribuído automaticamente entre os jogadores de linha.</span></span>
+        </label>
+
         <div class="bg-pitchtint rounded-xl p-4 space-y-2">
           <div class="flex justify-between text-inksoft text-xs">
             <span>Valor total do horário</span>
@@ -697,6 +743,11 @@
           </select>
         </label>
 
+        <label class="flex items-center gap-2.5 bg-pitchtint rounded-xl p-3 cursor-pointer">
+          <input type="checkbox" id="new-match-recorrente">
+          <span class="text-xs text-ink"><b>Repetir toda semana</b><br><span class="text-inksoft">Cria automaticamente o mesmo baba nas próximas semanas — sem precisar recriar a vaga.</span></span>
+        </label>
+
         <button type="submit" class="w-full bg-pitch hover:bg-pitchlight text-mist font-display tracking-widest text-sm py-3.5 rounded-xl transition">PUBLICAR VAGA</button>
       </form>
     </div>
@@ -745,6 +796,64 @@
 
         <button id="detail-cta" class="w-full text-mist font-display tracking-widest text-sm py-3.5 rounded-xl transition flex items-center justify-center gap-2"></button>
       </div>
+    </div>
+  </div>
+
+  <!-- MODAL: CAIXA DO BABA (TRANSPARÊNCIA) -->
+  <div id="modal-caixa" class="fixed inset-0 bg-void/60 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
+    <div class="bg-surface w-full max-w-md max-h-[85vh] overflow-y-auto rounded-2xl shadow-2xl p-7 space-y-5">
+      <div class="flex justify-between items-start border-b border-line pb-4">
+        <div>
+          <p class="text-[11px] font-display tracking-widest text-pitch flex items-center gap-1.5"><i data-lucide="wallet" class="w-3.5 h-3.5"></i> TRANSPARÊNCIA DO CAIXA</p>
+          <h3 class="font-display text-xl text-ink" id="caixa-titulo">Baba</h3>
+        </div>
+        <button onclick="closeModal('modal-caixa')" class="w-8 h-8 rounded-full bg-paperdim flex items-center justify-center text-inksoft hover:text-ink"><i data-lucide="x" class="w-4 h-4"></i></button>
+      </div>
+
+      <div class="bg-pitchtint rounded-xl p-4 space-y-2">
+        <div class="flex justify-between text-xs text-inksoft">
+          <span>Arrecadado</span>
+          <span class="text-ink font-semibold" id="caixa-arrecadado">R$ 0,00</span>
+        </div>
+        <div class="h-2 bg-mist/20 rounded-full overflow-hidden">
+          <div class="h-full bg-pitch rounded-full" id="caixa-progress" style="width:0%"></div>
+        </div>
+        <div class="flex justify-between text-xs pt-1">
+          <span class="text-inksoft">Total devido</span>
+          <span class="text-ink font-semibold" id="caixa-total">R$ 0,00</span>
+        </div>
+      </div>
+
+      <div>
+        <p class="font-display text-xs tracking-widest text-ink mb-2">QUEM JÁ PAGOU</p>
+        <div id="caixa-jogadores" class="divide-y divide-line border-t border-b border-line"></div>
+      </div>
+
+      <div class="bg-ambertint rounded-xl p-3 flex gap-2 text-[11px] text-inksoft">
+        <i data-lucide="file-check-2" class="w-4 h-4 text-amber flex-shrink-0 mt-0.5"></i>
+        <span>Ao atingir 100%, o comprovante de repasse para a quadra é emitido automaticamente e fica disponível aqui para todo o grupo.</span>
+      </div>
+
+      <button onclick="closeModal('modal-caixa')" class="w-full bg-paperdim hover:bg-line/60 text-ink font-display tracking-widest text-sm py-3 rounded-xl transition">FECHAR</button>
+    </div>
+  </div>
+
+  <!-- MODAL: SORTEIO AUTOMÁTICO DE TIMES -->
+  <div id="modal-sorteio" class="fixed inset-0 bg-void/60 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
+    <div class="bg-surface w-full max-w-lg max-h-[85vh] overflow-y-auto rounded-2xl shadow-2xl p-7 space-y-5">
+      <div class="flex justify-between items-start border-b border-line pb-4">
+        <div>
+          <p class="text-[11px] font-display tracking-widest text-pitch flex items-center gap-1.5"><i data-lucide="shuffle" class="w-3.5 h-3.5"></i> PRANCHETA TÁTICA</p>
+          <h3 class="font-display text-xl text-ink">Divisão automática de times</h3>
+        </div>
+        <button onclick="closeModal('modal-sorteio')" class="w-8 h-8 rounded-full bg-paperdim flex items-center justify-center text-inksoft hover:text-ink"><i data-lucide="x" class="w-4 h-4"></i></button>
+      </div>
+
+      <p class="text-xs text-inksoft">O sorteio considera a posição e a nota técnica/reputação de cada jogador confirmado, equilibrando os dois lados.</p>
+
+      <div class="grid grid-cols-2 gap-4" id="sorteio-times"></div>
+
+      <button onclick="sortearTimes()" class="w-full bg-pitch hover:bg-pitchlight text-mist font-display tracking-widest text-sm py-3.5 rounded-xl transition flex items-center justify-center gap-2"><i data-lucide="shuffle" class="w-4 h-4"></i> SORTEAR NOVAMENTE</button>
     </div>
   </div>
 
@@ -829,8 +938,40 @@
     ];
 
     let matchesData = [
-      { id: 1, titulo: "Baba da Terça das 20h", local: "Arena Gol de Placa", horario: "Hoje às 20h", nivel: "Intermediário", preco: "R$ 15,00", vagas: "1 goleiro e 1 zagueiro", privacy: "Aberto" },
-      { id: 2, titulo: "Futsal do Chopp", local: "Complexo Futsal Pro", horario: "Amanhã às 19h", nivel: "Avançado", preco: "R$ 12,00", vagas: "1 fixo / zagueiro", privacy: "Nota mínima 4.5" }
+      { id: 1, titulo: "Baba da Terça das 20h", local: "Arena Gol de Placa", horario: "Hoje às 20h", nivel: "Intermediário", preco: "R$ 15,00", precoNum: 15, vagas: "1 goleiro e 1 zagueiro", privacy: "Aberto",
+        organizador: "Lucas Camisa 10", status: "Aberto",
+        jogadores: [
+          { nome: "Lucas Camisa 10", pos: "Meia", pago: true },
+          { nome: "Marcos Paredão", pos: "Goleiro", pago: true },
+          { nome: "Gabriel Silva", pos: "Meia-Atacante", pago: true },
+          { nome: "Rodrigo Zagueiro", pos: "Zagueiro", pago: false },
+          { nome: "Igor Pé de Anjo", pos: "Atacante", pago: true },
+          { nome: "Bruno Mendes", pos: "Zagueiro", pago: true },
+          { nome: "Diego Alves", pos: "Meia", pago: false },
+          { nome: "Felipe Torres", pos: "Atacante", pago: true }
+        ],
+        espera: [ { nome: "Caio Andrade", pos: "Meia" }, { nome: "Tiago Nunes", pos: "Zagueiro" } ]
+      },
+      { id: 2, titulo: "Futsal do Chopp", local: "Complexo Futsal Pro", horario: "Amanhã às 19h", nivel: "Avançado", preco: "R$ 12,00", precoNum: 12, vagas: "1 fixo / zagueiro", privacy: "Nota mínima 4.5",
+        organizador: "André Costa", status: "Aberto",
+        jogadores: [
+          { nome: "André Costa", pos: "Goleiro", pago: true },
+          { nome: "Vinicius Ramos", pos: "Meia", pago: true },
+          { nome: "João Pedro", pos: "Zagueiro", pago: true },
+          { nome: "Rafael Lima", pos: "Atacante", pago: false }
+        ],
+        espera: [ { nome: "Pablo Reis", pos: "Zagueiro" } ]
+      },
+      { id: 3, titulo: "Racha de Sábado", local: "Arena Guanabara", horario: "Sábado às 17h", nivel: "Intermediário", preco: "R$ 18,00", precoNum: 18, vagas: "Time completo", privacy: "Aberto",
+        organizador: "Lucas Camisa 10", status: "Confirmado",
+        jogadores: [
+          { nome: "Lucas Camisa 10", pos: "Meia", pago: true },
+          { nome: "Marcos Paredão", pos: "Goleiro", pago: true },
+          { nome: "Bruno Mendes", pos: "Zagueiro", pago: true },
+          { nome: "Igor Pé de Anjo", pos: "Atacante", pago: true }
+        ],
+        espera: []
+      }
     ];
 
     let rankingsData = [
@@ -843,6 +984,60 @@
     let selectedQuadra = null;
     let selectedRating = 5;
     let isLightTheme = false;
+    let currentUserName = "Lucas Camisa 10";
+
+    function renderMyBabas() {
+      const wrap = document.getElementById('my-babas-list');
+      if (!wrap) return;
+      const meus = matchesData.filter(m => m.organizador === currentUserName);
+
+      if (meus.length === 0) {
+        wrap.innerHTML = `
+          <div class="border border-dashed border-line rounded-2xl p-10 text-center space-y-3">
+            <i data-lucide="calendar-x" class="w-8 h-8 text-inksoft mx-auto"></i>
+            <p class="text-sm text-ink font-medium">Você ainda não tem babas</p>
+            <p class="text-xs text-inksoft max-w-xs mx-auto">Publique uma vaga e comece a organizar — o pagamento, o sorteio de times e a fila de espera ficam por conta do app.</p>
+            <button onclick="openModalCreateMatch()" class="font-display text-xs tracking-widest bg-pitch text-mist px-5 py-3 rounded-full hover:bg-pitchlight transition inline-flex items-center gap-2 mt-2"><i data-lucide="plus" class="w-4 h-4"></i> CRIAR MEU PRIMEIRO BABA</button>
+          </div>
+        `;
+        lucide.createIcons();
+        return;
+      }
+
+      const statusStyle = {
+        "Aberto": "bg-ambertint text-amber",
+        "Confirmado": "bg-pitchtint text-pitch",
+        "Encerrado": "bg-paperdim text-inksoft"
+      };
+
+      wrap.innerHTML = meus.map(m => {
+        const pagos = m.jogadores.filter(j => j.pago).length;
+        return `
+          <div class="border border-line rounded-xl p-4 space-y-3">
+            <div class="flex items-start justify-between gap-3">
+              <div>
+                <span class="text-[10px] font-display tracking-wide px-2 py-0.5 rounded-full ${statusStyle[m.status] || 'bg-paperdim text-inksoft'}">${m.status.toUpperCase()}</span>
+                <h4 class="font-display text-sm text-ink mt-1">${m.titulo}</h4>
+                <p class="text-xs text-inksoft">${m.local} · ${m.horario} · ${pagos}/${m.jogadores.length} pagaram</p>
+              </div>
+              <button onclick="cancelarBaba(${m.id})" class="text-inksoft hover:text-rust flex-shrink-0" title="Cancelar baba"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+            </div>
+            <div class="flex gap-2">
+              <button onclick='openModalCaixa(${m.id})' class="flex-1 bg-paperdim hover:bg-line/60 text-ink font-display text-[11px] tracking-wide py-2 rounded-lg transition flex justify-center items-center gap-1.5"><i data-lucide="wallet" class="w-3.5 h-3.5"></i> CAIXA</button>
+              <button onclick='openModalSorteio(${m.id})' class="flex-1 bg-paperdim hover:bg-line/60 text-ink font-display text-[11px] tracking-wide py-2 rounded-lg transition flex justify-center items-center gap-1.5"><i data-lucide="shuffle" class="w-3.5 h-3.5"></i> SORTEAR</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+      lucide.createIcons();
+    }
+
+    function cancelarBaba(id) {
+      matchesData = matchesData.filter(m => m.id !== id);
+      renderMatches();
+      renderMyBabas();
+      showToast('Baba cancelado. Os jogadores confirmados foram avisados e reembolsados.');
+    }
 
     function toggleTheme() {
       isLightTheme = !isLightTheme;
@@ -864,7 +1059,32 @@
       renderQuadras(quadrasData);
       renderMatches();
       renderRankings();
+      renderWaitlistPreview();
+      renderMyBabas();
+      renderDestaques();
     };
+
+    function renderDestaques() {
+      const wrap = document.getElementById('destaques-partida');
+      if (!wrap) return;
+      const jogadores = matchesData[0] ? matchesData[0].jogadores : [];
+      const opts = jogadores.map(j => `<option>${j.nome}</option>`).join('');
+      const campos = [
+        { label: '⭐ Craque da partida', icon: 'award' },
+        { label: '⚽ Artilheiro', icon: 'target' },
+        { label: '🎯 Garçom (mais assistências)', icon: 'send' },
+        { label: '🧤 Paredão (goleiro)', icon: 'shield' }
+      ];
+      wrap.innerHTML = campos.map(c => `
+        <label class="block">
+          <span class="block text-xs text-inksoft mb-1">${c.label}</span>
+          <select class="w-full bg-paperdim rounded-xl px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-pitch/30">
+            <option value="">Selecionar…</option>
+            ${opts}
+          </select>
+        </label>
+      `).join('');
+    }
 
     function showToast(msg) {
       const toast = document.getElementById('toast');
@@ -874,11 +1094,11 @@
     }
 
     function switchTab(tabId) {
-      const allSections = ['reservas', 'matchmaking', 'seguranca', 'posjogo', 'perfil', 'cadastro'];
+      const allSections = ['reservas', 'matchmaking', 'seguranca', 'posjogo', 'meusbabas', 'perfil', 'cadastro'];
       allSections.forEach(t => document.getElementById(`sec-${t}`).classList.add('hidden'));
       document.getElementById(`sec-${tabId}`).classList.remove('hidden');
 
-      const pillTabs = ['reservas', 'matchmaking', 'seguranca', 'posjogo'];
+      const pillTabs = ['reservas', 'matchmaking', 'seguranca', 'posjogo', 'meusbabas'];
       pillTabs.forEach(t => {
         const btn = document.getElementById(`tab-${t}`);
         if (btn) btn.className = "px-4 py-2 rounded-full text-inksoft transition";
@@ -1007,19 +1227,28 @@
       document.getElementById('match-count').innerText = `${matchesData.length} vagas abertas`;
       list.innerHTML = '';
       matchesData.forEach(m => {
+        const whatsMsg = encodeURIComponent(`Bora jogar? ${m.titulo} — ${m.local}, ${m.horario}. Cota: ${m.preco}. Confirma sua vaga no VossoBaba!`);
         list.innerHTML += `
-          <div class="bg-surface rounded-2xl border border-line p-5 card flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div class="space-y-1.5">
-              <div class="flex items-center gap-2 flex-wrap">
-                <span class="text-[10px] font-display tracking-wide bg-ambertint text-amber px-2.5 py-1 rounded-full">${m.nivel.toUpperCase()}</span>
-                <span class="text-[10px] font-display tracking-wide bg-pitchtint text-pitch px-2.5 py-1 rounded-full">${m.privacy.toUpperCase()}</span>
+          <div class="bg-surface rounded-2xl border border-line p-5 card space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div class="space-y-1.5">
+                <div class="flex items-center gap-2 flex-wrap">
+                  <span class="text-[10px] font-display tracking-wide bg-ambertint text-amber px-2.5 py-1 rounded-full">${m.nivel.toUpperCase()}</span>
+                  <span class="text-[10px] font-display tracking-wide bg-pitchtint text-pitch px-2.5 py-1 rounded-full">${m.privacy.toUpperCase()}</span>
+                  ${m.recorrente ? `<span class="text-[10px] font-display tracking-wide bg-paperdim text-inksoft px-2.5 py-1 rounded-full flex items-center gap-1"><i data-lucide="repeat" class="w-3 h-3"></i>SEMANAL</span>` : ''}
+                </div>
+                <h4 class="font-display text-base text-ink">${m.titulo}</h4>
+                <p class="text-xs text-inksoft">${m.local} · ${m.horario} · Vaga: <b class="text-ink">${m.vagas}</b></p>
               </div>
-              <h4 class="font-display text-base text-ink">${m.titulo}</h4>
-              <p class="text-xs text-inksoft">${m.local} · ${m.horario} · Vaga: <b class="text-ink">${m.vagas}</b></p>
+              <div class="flex items-center gap-4 flex-shrink-0">
+                <span class="font-display text-base text-pitch">${m.preco}</span>
+                <button onclick="openModalTactical()" class="font-display text-xs tracking-wide bg-pitch text-mist px-4 py-2.5 rounded-full hover:bg-pitchlight transition whitespace-nowrap">ESCOLHER POSIÇÃO</button>
+              </div>
             </div>
-            <div class="flex items-center gap-4 flex-shrink-0">
-              <span class="font-display text-base text-pitch">${m.preco}</span>
-              <button onclick="openModalTactical()" class="font-display text-xs tracking-wide bg-pitch text-mist px-4 py-2.5 rounded-full hover:bg-pitchlight transition whitespace-nowrap">ESCOLHER POSIÇÃO</button>
+            <div class="flex gap-2 pt-3 border-t border-line">
+              <button onclick='openModalCaixa(${m.id})' class="flex-1 bg-paperdim hover:bg-line/60 text-ink font-display text-xs tracking-wide py-2 rounded-xl transition flex justify-center items-center gap-1.5"><i data-lucide="wallet" class="w-3.5 h-3.5"></i> CAIXA DO BABA</button>
+              <button onclick='openModalSorteio(${m.id})' class="flex-1 bg-paperdim hover:bg-line/60 text-ink font-display text-xs tracking-wide py-2 rounded-xl transition flex justify-center items-center gap-1.5"><i data-lucide="shuffle" class="w-3.5 h-3.5"></i> SORTEAR TIMES</button>
+              <a href="https://wa.me/?text=${whatsMsg}" target="_blank" rel="noopener" class="flex-1 bg-paperdim hover:bg-line/60 text-ink font-display text-xs tracking-wide py-2 rounded-xl transition flex justify-center items-center gap-1.5"><i data-lucide="message-circle" class="w-3.5 h-3.5"></i> CONVIDAR</a>
             </div>
           </div>
         `;
@@ -1100,6 +1329,7 @@
     function openModalSplit(q) {
       selectedQuadra = q;
       document.getElementById('modal-quadra-title').innerText = q.nome;
+      document.getElementById('split-goleiro-gratis').checked = false;
       const slotSelect = document.getElementById('split-slot');
       slotSelect.innerHTML = q.horarios.map((h, i) => `<option value="${i}">${h.hora} — R$ ${h.preco.toFixed(2)}</option>`).join('');
       onSlotChange();
@@ -1119,7 +1349,9 @@
       const idx = document.getElementById('split-slot').value;
       const slot = selectedQuadra.horarios[idx];
       const count = parseInt(document.getElementById('split-count').value) || 1;
-      document.getElementById('split-per-val').innerText = `R$ ${(slot.preco / count).toFixed(2)}`;
+      const goleiroGratis = document.getElementById('split-goleiro-gratis').checked;
+      const divisor = goleiroGratis ? Math.max(count - 1, 1) : count;
+      document.getElementById('split-per-val').innerText = `R$ ${(slot.preco / divisor).toFixed(2)}`;
     }
 
     function confirmPixSplit() {
@@ -1137,22 +1369,109 @@
 
     function submitNewMatch(e) {
       e.preventDefault();
+      const precoStr = document.getElementById('new-match-price').value;
+      const precoNum = parseFloat(precoStr.replace(/[^\d,.-]/g, '').replace(',', '.')) || 0;
       matchesData.unshift({
         id: Date.now(),
         titulo: document.getElementById('new-match-title').value,
         local: "Arena conveniada",
         horario: document.getElementById('new-match-time').value,
         nivel: "Aberto",
-        preco: document.getElementById('new-match-price').value,
+        preco: precoStr,
+        precoNum,
         vagas: document.getElementById('new-match-pos').value,
-        privacy: document.getElementById('new-match-privacy').value
+        privacy: document.getElementById('new-match-privacy').value,
+        recorrente: document.getElementById('new-match-recorrente').checked,
+        organizador: currentUserName,
+        status: "Aberto",
+        jogadores: [{ nome: currentUserName, pos: "Organizador", pago: true }],
+        espera: []
       });
       renderMatches();
+      renderMyBabas();
       closeModal('modal-create-match');
       showToast('Vaga publicada com sucesso.');
     }
 
     function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+
+    function renderWaitlistPreview() {
+      const wrap = document.getElementById('waitlist-preview');
+      if (!wrap) return;
+      const fila = matchesData[0] ? matchesData[0].espera : [];
+      wrap.innerHTML = fila.map((p, i) => `
+        <div class="flex items-center justify-between bg-paperdim rounded-lg px-2.5 py-1.5 text-xs">
+          <span class="text-ink">${i + 1}º ${p.nome} <span class="text-inksoft">· ${p.pos}</span></span>
+          ${i === 0 ? '<span class="text-pitch text-[10px] font-display">PRÓXIMO</span>' : ''}
+        </div>
+      `).join('');
+    }
+
+    function openModalCaixa(matchId) {
+      const m = matchesData.find(x => x.id === matchId);
+      if (!m) return;
+      document.getElementById('caixa-titulo').innerText = m.titulo;
+
+      const pagos = m.jogadores.filter(j => j.pago).length;
+      const total = m.jogadores.length;
+      const arrecadado = pagos * m.precoNum;
+      const totalDevido = total * m.precoNum;
+      const pct = totalDevido > 0 ? Math.round((arrecadado / totalDevido) * 100) : 0;
+
+      document.getElementById('caixa-arrecadado').innerText = `R$ ${arrecadado.toFixed(2)} (${pct}%)`;
+      document.getElementById('caixa-total').innerText = `R$ ${totalDevido.toFixed(2)}`;
+      document.getElementById('caixa-progress').style.width = `${pct}%`;
+
+      document.getElementById('caixa-jogadores').innerHTML = m.jogadores.map(j => `
+        <div class="py-2.5 flex items-center justify-between text-sm">
+          <span class="text-ink">${j.nome} <span class="text-inksoft text-xs">· ${j.pos}</span></span>
+          ${j.pago
+            ? `<span class="text-pitch text-xs flex items-center gap-1"><i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> Pago</span>`
+            : `<span class="text-rust text-xs flex items-center gap-1"><i data-lucide="clock" class="w-3.5 h-3.5"></i> Pendente</span>`}
+        </div>
+      `).join('');
+
+      document.getElementById('modal-caixa').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    let sorteioMatchId = null;
+    function openModalSorteio(matchId) {
+      sorteioMatchId = matchId;
+      sortearTimes();
+      document.getElementById('modal-sorteio').classList.remove('hidden');
+    }
+
+    function sortearTimes() {
+      const m = matchesData.find(x => x.id === sorteioMatchId);
+      if (!m) return;
+      const jogadores = m.jogadores.filter(j => j.pago);
+
+      const goleiros = jogadores.filter(j => j.pos === 'Goleiro');
+      const linha = jogadores.filter(j => j.pos !== 'Goleiro').sort(() => Math.random() - 0.5);
+
+      const timeVerde = [];
+      const timePreto = [];
+      if (goleiros[0]) timeVerde.push(goleiros[0]);
+      if (goleiros[1]) timePreto.push(goleiros[1]);
+
+      linha.forEach((j, i) => {
+        if (i % 2 === 0) timeVerde.push(j); else timePreto.push(j);
+      });
+
+      const renderTeam = (team, label, colorClass, chipClass) => `
+        <div class="space-y-2">
+          <p class="font-display text-xs tracking-widest ${colorClass} flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full ${chipClass}"></span> ${label}</p>
+          <div class="space-y-1.5">
+            ${team.map(j => `<div class="bg-paperdim rounded-lg px-2.5 py-2 text-xs text-ink">${j.nome} <span class="text-inksoft">· ${j.pos}</span></div>`).join('') || '<p class="text-xs text-inksoft">Sem jogadores suficientes</p>'}
+          </div>
+        </div>
+      `;
+
+      document.getElementById('sorteio-times').innerHTML =
+        renderTeam(timeVerde, 'TIME VERDE', 'text-pitch', 'bg-pitch') +
+        renderTeam(timePreto, 'TIME PRETO', 'text-inksoft', 'bg-void border border-line');
+    }
 
     function setRating(val) {
       selectedRating = val;
@@ -1181,9 +1500,12 @@
       e.preventDefault();
       const name = document.getElementById('edit-name').value;
       const pos = document.getElementById('edit-pos').value;
+      matchesData.forEach(m => { if (m.organizador === currentUserName) m.organizador = name; });
+      currentUserName = name;
       document.getElementById('profile-name').innerText = name;
       document.getElementById('nav-user-name').innerText = name;
       document.getElementById('profile-pos').innerText = `Posição preferida: ${pos}`;
+      renderMyBabas();
       showToast('Perfil atualizado com sucesso.');
     }
 
