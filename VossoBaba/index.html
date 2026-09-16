@@ -104,24 +104,199 @@
 </head>
 <body class="bg-paper text-ink antialiased min-h-screen flex flex-col">
 
+  <!-- ============ TELA DE AUTENTICAÇÃO (PORTA DE ENTRADA) ============ -->
+  <section id="sec-auth" class="min-h-screen w-full relative overflow-hidden flex items-center justify-center p-5">
+    <img src="https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=1600&q=80" class="absolute inset-0 w-full h-full object-cover">
+    <div class="absolute inset-0 bg-pitch mix-blend-multiply opacity-90"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-void/70 via-void/40 to-void/80"></div>
+    <div class="absolute inset-0 turf-dots"></div>
+
+    <div class="relative w-full max-w-md">
+      <div class="flex items-center gap-2.5 justify-center mb-6">
+        <div class="w-11 h-11 rounded-full bg-void flex items-center justify-center flex-shrink-0">
+          <svg width="30" height="22" viewBox="0 0 44 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="1" y="4" width="15" height="3" rx="1.5" fill="var(--c-pitch)"/>
+            <rect x="5" y="10" width="11" height="3" rx="1.5" fill="var(--c-pitch)"/>
+            <rect x="9" y="16" width="7" height="3" rx="1.5" fill="var(--c-pitch)"/>
+            <path d="M22 27 A13 13 0 1 0 22 5" stroke="var(--c-pitch)" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+            <circle cx="27" cy="16" r="10.5" fill="var(--c-mist)"/>
+            <polygon points="27,9 30.5,11.5 29.3,15.7 24.7,15.7 23.5,11.5" fill="var(--c-void)"/>
+            <polygon points="20,13.5 23.5,11.5 24.7,15.7 21.7,18.3 18.3,16" fill="var(--c-void)"/>
+            <polygon points="33.7,13.5 30.5,11.5 29.3,15.7 32.3,18.3 35.7,16" fill="var(--c-void)"/>
+            <polygon points="23.7,25.3 21.7,18.3 24.7,15.7 29.3,15.7 32.3,18.3 30.3,25.3" fill="none" stroke="var(--c-void)" stroke-width="0.6"/>
+          </svg>
+        </div>
+        <p class="font-display text-2xl font-bold text-mist">VOSSO<span style="color:var(--c-pitch)">BABA</span></p>
+      </div>
+
+      <div class="bg-surface rounded-2xl border border-line shadow-2xl p-7">
+
+        <!-- LOGIN -->
+        <div id="auth-login">
+          <p class="font-display text-xs tracking-widest text-pitch mb-1">BEM-VINDO DE VOLTA</p>
+          <h2 class="font-display text-2xl text-ink mb-5">Entrar na sua conta</h2>
+          <form onsubmit="doLogin(event)" class="space-y-4 text-sm">
+            <label class="block">
+              <span class="block text-xs text-inksoft mb-1.5">E-mail ou telefone</span>
+              <input type="text" id="login-email" required placeholder="voce@email.com" class="w-full bg-paperdim rounded-xl px-3 py-2.5 outline-none focus:ring-2 focus:ring-pitch/30">
+            </label>
+            <label class="block">
+              <span class="block text-xs text-inksoft mb-1.5">Senha</span>
+              <input type="password" id="login-senha" required minlength="6" placeholder="••••••••" class="w-full bg-paperdim rounded-xl px-3 py-2.5 outline-none focus:ring-2 focus:ring-pitch/30">
+            </label>
+            <p id="login-error" class="hidden text-xs text-rust bg-rusttint rounded-lg px-3 py-2"></p>
+            <div class="flex justify-end">
+              <button type="button" onclick="showAuthScreen('forgot')" class="text-xs text-pitch hover:underline">Esqueci minha senha</button>
+            </div>
+            <button type="submit" class="w-full bg-pitch hover:bg-pitchlight text-mist font-display tracking-widest text-sm py-3.5 rounded-xl transition">ENTRAR</button>
+          </form>
+          <button onclick="continueAsGuest()" class="w-full text-xs text-inksoft hover:text-ink mt-4 py-2 flex items-center justify-center gap-1.5"><i data-lucide="eye" class="w-3.5 h-3.5"></i> Continuar como visitante</button>
+          <p class="text-center text-xs text-inksoft mt-3 pt-4 border-t border-line">Novo por aqui? <button onclick="showAuthScreen('signup1')" class="text-pitch font-semibold hover:underline">Criar conta</button></p>
+        </div>
+
+        <!-- CADASTRO — ETAPA 1: DADOS DE ACESSO -->
+        <div id="auth-signup1" class="hidden">
+          <p class="font-display text-xs tracking-widest text-pitch mb-1">CRIAR CONTA · ETAPA 1 DE 2</p>
+          <h2 class="font-display text-2xl text-ink mb-5">Seus dados de acesso</h2>
+          <form onsubmit="goToSignupStep2(event)" class="space-y-4 text-sm">
+            <label class="block">
+              <span class="block text-xs text-inksoft mb-1.5">Nome completo</span>
+              <input type="text" id="signup-nome" required placeholder="Seu nome" class="w-full bg-paperdim rounded-xl px-3 py-2.5 outline-none focus:ring-2 focus:ring-pitch/30">
+            </label>
+            <label class="block">
+              <span class="block text-xs text-inksoft mb-1.5">E-mail</span>
+              <input type="email" id="signup-email" required placeholder="voce@email.com" class="w-full bg-paperdim rounded-xl px-3 py-2.5 outline-none focus:ring-2 focus:ring-pitch/30">
+            </label>
+            <label class="block">
+              <span class="block text-xs text-inksoft mb-1.5">Telefone (WhatsApp)</span>
+              <input type="tel" id="signup-telefone" required placeholder="(71) 90000-0000" class="w-full bg-paperdim rounded-xl px-3 py-2.5 outline-none focus:ring-2 focus:ring-pitch/30">
+            </label>
+            <label class="block">
+              <span class="block text-xs text-inksoft mb-1.5">Senha</span>
+              <input type="password" id="signup-senha" required minlength="6" placeholder="Mínimo 6 caracteres" class="w-full bg-paperdim rounded-xl px-3 py-2.5 outline-none focus:ring-2 focus:ring-pitch/30">
+            </label>
+            <label class="block">
+              <span class="block text-xs text-inksoft mb-1.5">Confirmar senha</span>
+              <input type="password" id="signup-senha2" required minlength="6" placeholder="Repita a senha" class="w-full bg-paperdim rounded-xl px-3 py-2.5 outline-none focus:ring-2 focus:ring-pitch/30">
+            </label>
+            <p id="signup1-error" class="hidden text-xs text-rust bg-rusttint rounded-lg px-3 py-2"></p>
+            <button type="submit" class="w-full bg-pitch hover:bg-pitchlight text-mist font-display tracking-widest text-sm py-3.5 rounded-xl transition">CONTINUAR</button>
+          </form>
+          <p class="text-center text-xs text-inksoft mt-4">Já tem conta? <button onclick="showAuthScreen('login')" class="text-pitch font-semibold hover:underline">Entrar</button></p>
+        </div>
+
+        <!-- CADASTRO — ETAPA 2: VALIDAÇÃO DE IDENTIDADE -->
+        <div id="auth-signup2" class="hidden">
+          <p class="font-display text-xs tracking-widest text-pitch mb-1">CRIAR CONTA · ETAPA 2 DE 2</p>
+          <h2 class="font-display text-2xl text-ink mb-1">Validação de identidade</h2>
+          <p class="text-xs text-inksoft mb-5">Exigimos isso de todo mundo para manter os babas seguros e confiáveis.</p>
+          <form onsubmit="finishSignup(event)" class="space-y-4 text-sm">
+            <label class="block">
+              <span class="block text-xs text-inksoft mb-1.5">CPF</span>
+              <input type="text" id="signup-cpf" required placeholder="000.000.000-00" maxlength="14" oninput="maskCPF(this)" class="w-full bg-paperdim rounded-xl px-3 py-2.5 outline-none focus:ring-2 focus:ring-pitch/30">
+            </label>
+            <label class="block">
+              <span class="block text-xs text-inksoft mb-1.5">Posição preferida</span>
+              <select id="signup-pos" class="w-full bg-paperdim rounded-xl px-3 py-2.5 outline-none focus:ring-2 focus:ring-pitch/30">
+                <option value="Meia-Atacante">Meia-Atacante</option>
+                <option value="Goleiro">Goleiro</option>
+                <option value="Zagueiro / Fixo">Zagueiro / Fixo</option>
+                <option value="Atacante / Pivô">Atacante / Pivô</option>
+              </select>
+            </label>
+            <div>
+              <span class="block text-xs text-inksoft mb-1.5">Foto de perfil</span>
+              <label class="flex items-center gap-3 border-2 border-dashed border-line rounded-xl p-3 cursor-pointer hover:border-pitch transition">
+                <div id="signup-foto-preview" class="w-12 h-12 rounded-full bg-paperdim flex items-center justify-center text-inksoft flex-shrink-0"><i data-lucide="camera" class="w-5 h-5"></i></div>
+                <span class="text-xs text-inksoft">Clique para enviar uma foto real do seu rosto</span>
+                <input type="file" accept="image/*" class="hidden" onchange="previewSignupFoto(event)">
+              </label>
+            </div>
+            <label class="flex items-start gap-2.5 pt-1 cursor-pointer">
+              <input type="checkbox" id="signup-termos" required class="mt-0.5">
+              <span class="text-xs text-inksoft">Li e aceito os <button type="button" onclick="openModalTermos()" class="text-pitch hover:underline">Termos de Uso e a Política de Privacidade</button>, incluindo o uso do meu CPF apenas para validação de identidade.</span>
+            </label>
+            <div class="flex gap-3 pt-2">
+              <button type="button" onclick="showAuthScreen('signup1')" class="flex-1 bg-paperdim hover:bg-line/60 text-ink font-display tracking-widest text-sm py-3.5 rounded-xl transition">VOLTAR</button>
+              <button type="submit" class="flex-[2] bg-pitch hover:bg-pitchlight text-mist font-display tracking-widest text-sm py-3.5 rounded-xl transition">CRIAR CONTA</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- ESQUECI MINHA SENHA -->
+        <div id="auth-forgot" class="hidden">
+          <p class="font-display text-xs tracking-widest text-pitch mb-1">RECUPERAR ACESSO</p>
+          <h2 class="font-display text-2xl text-ink mb-5">Esqueceu sua senha?</h2>
+          <form onsubmit="doForgotPassword(event)" class="space-y-4 text-sm">
+            <label class="block">
+              <span class="block text-xs text-inksoft mb-1.5">E-mail cadastrado</span>
+              <input type="email" id="forgot-email" required placeholder="voce@email.com" class="w-full bg-paperdim rounded-xl px-3 py-2.5 outline-none focus:ring-2 focus:ring-pitch/30">
+            </label>
+            <button type="submit" class="w-full bg-pitch hover:bg-pitchlight text-mist font-display tracking-widest text-sm py-3.5 rounded-xl transition">ENVIAR LINK DE REDEFINIÇÃO</button>
+          </form>
+          <button onclick="showAuthScreen('login')" class="w-full text-xs text-inksoft hover:text-ink mt-4 flex items-center justify-center gap-1.5"><i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Voltar para o login</button>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- MODAL: TERMOS DE USO -->
+  <div id="modal-termos" class="fixed inset-0 bg-void/60 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
+    <div class="bg-surface w-full max-w-md max-h-[80vh] overflow-y-auto rounded-2xl shadow-2xl p-7 space-y-4">
+      <div class="flex justify-between items-start border-b border-line pb-4">
+        <h3 class="font-display text-xl text-ink">Termos e Privacidade</h3>
+        <button onclick="closeModal('modal-termos')" class="w-8 h-8 rounded-full bg-paperdim flex items-center justify-center text-inksoft hover:text-ink"><i data-lucide="x" class="w-4 h-4"></i></button>
+      </div>
+      <div class="text-xs text-inksoft space-y-3 leading-relaxed">
+        <p><b class="text-ink">Uso de dados:</b> CPF, telefone e foto são usados exclusivamente para validar sua identidade e reduzir fraude/calote entre usuários. Não vendemos seus dados a terceiros.</p>
+        <p><b class="text-ink">Pagamentos:</b> valores ficam em custódia até o check-in ser confirmado. Reembolsos seguem a política de cancelamento de cada reserva.</p>
+        <p><b class="text-ink">Reputação:</b> avaliações e furos ficam associados ao seu perfil e podem limitar seu acesso a novas vagas.</p>
+        <p><b class="text-ink">Exclusão de conta:</b> você pode solicitar a exclusão dos seus dados a qualquer momento pela aba Perfil.</p>
+        <p class="text-inksoft/70">Documento ilustrativo para fins de protótipo acadêmico — não constitui termo legal vigente.</p>
+      </div>
+      <button onclick="closeModal('modal-termos')" class="w-full bg-paperdim hover:bg-line/60 text-ink font-display tracking-widest text-sm py-3 rounded-xl transition">FECHAR</button>
+    </div>
+  </div>
+
+  <!-- MODAL: AÇÃO REQUER CONTA -->
+  <div id="modal-auth-required" class="fixed inset-0 bg-void/60 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
+    <div class="bg-surface w-full max-w-sm rounded-2xl shadow-2xl p-7 space-y-5 text-center">
+      <div class="w-12 h-12 rounded-full bg-pitchtint flex items-center justify-center mx-auto"><i data-lucide="lock" class="w-5 h-5 text-pitch"></i></div>
+      <p id="auth-required-msg" class="text-sm text-ink">Crie uma conta ou faça login para continuar.</p>
+      <div class="flex flex-col gap-2.5">
+        <button onclick="goToFullAuth('signup1')" class="w-full bg-pitch hover:bg-pitchlight text-mist font-display tracking-widest text-sm py-3 rounded-xl transition">CRIAR CONTA</button>
+        <button onclick="goToFullAuth('login')" class="w-full bg-paperdim hover:bg-line/60 text-ink font-display tracking-widest text-sm py-3 rounded-xl transition">JÁ TENHO CONTA</button>
+        <button onclick="closeModal('modal-auth-required')" class="text-xs text-inksoft hover:text-ink mt-1">Continuar navegando</button>
+      </div>
+    </div>
+  </div>
+
   <!-- TOAST -->
   <div id="toast" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-void text-mist text-sm font-medium px-5 py-2.5 rounded-full shadow-lg flex items-center gap-2 transition-all duration-300 opacity-0 pointer-events-none -translate-y-3">
     <i data-lucide="check-circle-2" class="w-4 h-4 text-mist"></i>
     <span id="toast-msg">Ação realizada.</span>
   </div>
 
+
   <!-- HEADER -->
-  <header class="border-b border-line bg-paper/95 backdrop-blur sticky top-0 z-40">
+  <header id="app-header" class="hidden border-b border-line bg-paper/95 backdrop-blur sticky top-0 z-40">
     <div class="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between">
 
       <div class="flex items-center gap-2.5 cursor-pointer" onclick="switchTab('reservas')">
-        <div class="w-9 h-9 rounded-full bg-pitch flex items-center justify-center">
-          <svg width="19" height="19" viewBox="0 0 26 26" fill="none">
-            <circle cx="13" cy="13" r="11.5" stroke="#F6F4EE" stroke-width="1.6"/>
-            <path d="M13 5.5L18 9.2L16.1 15.2H9.9L8 9.2L13 5.5Z" fill="#F6F4EE"/>
+        <div class="w-9 h-9 rounded-full bg-void flex items-center justify-center flex-shrink-0">
+          <svg width="24" height="18" viewBox="0 0 44 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="1" y="4" width="15" height="3" rx="1.5" fill="var(--c-pitch)"/>
+            <rect x="5" y="10" width="11" height="3" rx="1.5" fill="var(--c-pitch)"/>
+            <rect x="9" y="16" width="7" height="3" rx="1.5" fill="var(--c-pitch)"/>
+            <path d="M22 27 A13 13 0 1 0 22 5" stroke="var(--c-pitch)" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+            <circle cx="27" cy="16" r="10.5" fill="var(--c-mist)"/>
+            <polygon points="27,9 30.5,11.5 29.3,15.7 24.7,15.7 23.5,11.5" fill="var(--c-void)"/>
+            <polygon points="20,13.5 23.5,11.5 24.7,15.7 21.7,18.3 18.3,16" fill="var(--c-void)"/>
+            <polygon points="33.7,13.5 30.5,11.5 29.3,15.7 32.3,18.3 35.7,16" fill="var(--c-void)"/>
           </svg>
         </div>
-        <p class="font-display text-lg font-semibold tracking-wide text-ink">VOSSOBABA</p>
+        <p class="font-display text-lg font-bold text-ink">VOSSO<span style="color:var(--c-pitch)">BABA</span></p>
       </div>
 
       <nav class="hidden md:flex items-center gap-1.5 font-display text-[12.5px] tracking-wide bg-paperdim rounded-full p-1">
@@ -133,6 +308,19 @@
       </nav>
 
       <div class="hidden md:flex items-center gap-3">
+        <div class="relative">
+          <button onclick="toggleNotifications()" id="notif-bell" class="w-9 h-9 rounded-full bg-paperdim hover:bg-line/60 flex items-center justify-center text-ink transition flex-shrink-0 relative" title="Notificações">
+            <i data-lucide="bell" class="w-4 h-4"></i>
+            <span id="notif-badge" class="hidden absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full bg-rust text-mist text-[9px] font-bold flex items-center justify-center">0</span>
+          </button>
+          <div id="notif-dropdown" class="hidden absolute right-0 mt-2 w-80 bg-surface border border-line rounded-2xl shadow-2xl p-2 z-50 max-h-96 overflow-y-auto">
+            <div class="flex items-center justify-between px-3 py-2">
+              <p class="font-display text-xs tracking-widest text-ink">NOTIFICAÇÕES</p>
+              <button onclick="markAllNotifsRead()" class="text-[11px] text-pitch hover:underline">Marcar como lidas</button>
+            </div>
+            <div id="notif-list" class="space-y-1"></div>
+          </div>
+        </div>
         <button onclick="toggleTheme()" id="theme-toggle" class="w-9 h-9 rounded-full bg-paperdim hover:bg-line/60 flex items-center justify-center text-ink transition flex-shrink-0" title="Alternar tema claro/escuro">
           <i data-lucide="moon" class="w-4 h-4" id="theme-icon"></i>
         </button>
@@ -144,7 +332,7 @@
             <p class="text-xs font-semibold text-ink" id="nav-user-name">Lucas "Camisa 10"</p>
             <p class="text-[11px] text-pitch flex items-center gap-1 justify-end"><i data-lucide="shield-check" class="w-3 h-3"></i> 4.9</p>
           </div>
-          <div class="w-8 h-8 rounded-full bg-pitch text-mist flex items-center justify-center font-display text-xs">LC</div>
+          <div class="w-8 h-8 rounded-full bg-pitch text-mist flex items-center justify-center font-display text-xs" id="nav-user-avatar">LC</div>
         </button>
       </div>
     </div>
@@ -161,7 +349,7 @@
     </div>
   </header>
 
-  <main class="w-full flex-grow">
+  <main id="app-main" class="hidden w-full flex-grow">
 
     <!-- ============ TAB 1: RESERVAS ============ -->
     <section id="sec-reservas">
@@ -442,7 +630,7 @@
       <div class="bg-pitch relative overflow-hidden">
         <div class="absolute inset-0 turf-dots opacity-40"></div>
         <div class="relative max-w-6xl mx-auto px-5 py-10 flex flex-col sm:flex-row gap-6 items-start text-mist">
-          <div class="w-16 h-16 rounded-full bg-amber text-void flex items-center justify-center font-display text-xl flex-shrink-0">LC</div>
+          <div class="w-16 h-16 rounded-full bg-amber text-void flex items-center justify-center font-display text-xl flex-shrink-0" id="profile-avatar">LC</div>
           <div class="space-y-2 flex-grow">
             <div class="flex items-center gap-2 flex-wrap">
               <h2 class="font-display text-2xl" id="profile-name">Lucas "Camisa 10"</h2>
@@ -513,6 +701,32 @@
 
           <button type="submit" class="bg-pitch hover:bg-pitchlight text-mist font-display tracking-widest text-sm px-6 py-3.5 rounded-xl transition">SALVAR ALTERAÇÕES</button>
         </form>
+
+        <div class="bg-surface rounded-2xl border border-line p-7 space-y-5 card mt-6">
+          <p class="font-display text-sm tracking-widest text-ink">CONTA E SEGURANÇA</p>
+
+          <form onsubmit="doChangePassword(event)" class="grid sm:grid-cols-2 gap-4 text-sm">
+            <label class="block">
+              <span class="block text-xs text-inksoft mb-1.5">Nova senha</span>
+              <input type="password" id="change-senha1" minlength="6" placeholder="Mínimo 6 caracteres" class="w-full bg-paperdim rounded-xl px-3 py-2.5 outline-none focus:ring-2 focus:ring-pitch/30">
+            </label>
+            <label class="block">
+              <span class="block text-xs text-inksoft mb-1.5">Confirmar nova senha</span>
+              <input type="password" id="change-senha2" minlength="6" placeholder="Repita a senha" class="w-full bg-paperdim rounded-xl px-3 py-2.5 outline-none focus:ring-2 focus:ring-pitch/30">
+            </label>
+            <button type="submit" class="sm:col-span-2 bg-paperdim hover:bg-line/60 text-ink font-display tracking-widest text-xs py-3 rounded-xl transition">ALTERAR SENHA</button>
+          </form>
+
+          <label class="flex items-center justify-between gap-3 pt-4 border-t border-line cursor-pointer">
+            <span class="text-sm text-ink">Notificações por e-mail e push</span>
+            <input type="checkbox" checked class="w-4 h-4">
+          </label>
+
+          <div class="pt-4 border-t border-line flex flex-col sm:flex-row gap-3">
+            <button onclick="doLogout()" class="flex-1 bg-paperdim hover:bg-line/60 text-ink font-display tracking-widest text-xs py-3 rounded-xl transition flex items-center justify-center gap-2"><i data-lucide="log-out" class="w-4 h-4"></i> SAIR DA CONTA</button>
+            <button onclick="requestDeleteAccount()" class="flex-1 bg-rusttint hover:brightness-95 text-rust font-display tracking-widest text-xs py-3 rounded-xl transition flex items-center justify-center gap-2"><i data-lucide="trash-2" class="w-4 h-4"></i> EXCLUIR CONTA</button>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -619,7 +833,7 @@
 
   </main>
 
-  <footer class="border-t border-line mt-4">
+  <footer id="app-footer" class="hidden border-t border-line mt-4">
     <div class="max-w-6xl mx-auto px-5 py-6 text-xs text-inksoft flex justify-between">
       <span>VossoBaba — protótipo de TCC</span>
       <span>Salvador, BA</span>
@@ -986,6 +1200,236 @@
     let isLightTheme = false;
     let currentUserName = "Lucas Camisa 10";
 
+    // ================= AUTENTICAÇÃO =================
+    let isLoggedIn = false;
+    let isGuest = false;
+    let pendingSignup = {};
+    let signupFotoUrl = null;
+
+    function showAuthScreen(name) {
+      ['login', 'signup1', 'signup2', 'forgot'].forEach(s => document.getElementById(`auth-${s}`).classList.add('hidden'));
+      document.getElementById(`auth-${name}`).classList.remove('hidden');
+      document.getElementById('login-error')?.classList.add('hidden');
+      document.getElementById('signup1-error')?.classList.add('hidden');
+    }
+
+    function goToFullAuth(name) {
+      closeModal('modal-auth-required');
+      document.getElementById('app-header').classList.add('hidden');
+      document.getElementById('app-main').classList.add('hidden');
+      document.getElementById('app-footer').classList.add('hidden');
+      document.getElementById('sec-auth').classList.remove('hidden');
+      showAuthScreen(name);
+    }
+
+    function nameFromEmail(email) {
+      const base = email.split('@')[0].replace(/[._\d]+/g, ' ').trim();
+      if (!base) return "Novo Jogador";
+      return base.split(' ').filter(Boolean).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+    }
+
+    function doLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value.trim();
+      const senha = document.getElementById('login-senha').value;
+      const err = document.getElementById('login-error');
+      if (!email || senha.length < 6) {
+        err.innerText = 'Confira o e-mail/telefone e a senha (mínimo 6 caracteres).';
+        err.classList.remove('hidden');
+        return;
+      }
+      currentUserName = "Lucas Camisa 10"; // conta de demonstração já cadastrada
+      isLoggedIn = true;
+      isGuest = false;
+      enterApp();
+      showToast(`Bem-vindo de volta, ${currentUserName.split(' ')[0]}!`);
+    }
+
+    function goToSignupStep2(e) {
+      e.preventDefault();
+      const nome = document.getElementById('signup-nome').value.trim();
+      const email = document.getElementById('signup-email').value.trim();
+      const telefone = document.getElementById('signup-telefone').value.trim();
+      const senha = document.getElementById('signup-senha').value;
+      const senha2 = document.getElementById('signup-senha2').value;
+      const err = document.getElementById('signup1-error');
+
+      if (senha !== senha2) {
+        err.innerText = 'As senhas não coincidem.';
+        err.classList.remove('hidden');
+        return;
+      }
+      if (senha.length < 6) {
+        err.innerText = 'A senha precisa ter pelo menos 6 caracteres.';
+        err.classList.remove('hidden');
+        return;
+      }
+      pendingSignup = { nome, email, telefone };
+      showAuthScreen('signup2');
+    }
+
+    function maskCPF(input) {
+      let v = input.value.replace(/\D/g, '').slice(0, 11);
+      if (v.length > 9) v = v.replace(/(\d{3})(\d{3})(\d{3})(\d{1,2})/, '$1.$2.$3-$4');
+      else if (v.length > 6) v = v.replace(/(\d{3})(\d{3})(\d{1,3})/, '$1.$2.$3');
+      else if (v.length > 3) v = v.replace(/(\d{3})(\d{1,3})/, '$1.$2');
+      input.value = v;
+    }
+
+    function previewSignupFoto(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      signupFotoUrl = URL.createObjectURL(file);
+      document.getElementById('signup-foto-preview').innerHTML = `<img src="${signupFotoUrl}" class="w-12 h-12 rounded-full object-cover">`;
+    }
+
+    function openModalTermos() { document.getElementById('modal-termos').classList.remove('hidden'); }
+
+    function applyUserIdentity(name) {
+      const initials = name.split(' ').filter(Boolean).slice(0, 2).map(w => w[0].toUpperCase()).join('') || '??';
+      document.getElementById('profile-name').innerText = name;
+      document.getElementById('nav-user-name').innerText = name;
+      const navAvatar = document.getElementById('nav-user-avatar');
+      const profileAvatar = document.getElementById('profile-avatar');
+      if (navAvatar) navAvatar.innerText = initials;
+      if (profileAvatar) profileAvatar.innerText = initials;
+    }
+
+    function finishSignup(e) {
+      e.preventDefault();
+      const cpf = document.getElementById('signup-cpf').value;
+      if (cpf.replace(/\D/g, '').length !== 11) {
+        showToast('Digite um CPF válido com 11 dígitos.');
+        return;
+      }
+      const pos = document.getElementById('signup-pos').value;
+      currentUserName = pendingSignup.nome || "Novo Jogador";
+      isLoggedIn = true;
+      isGuest = false;
+
+      applyUserIdentity(currentUserName);
+      document.getElementById('profile-pos').innerText = `Posição preferida: ${pos}`;
+
+      enterApp();
+      pushNotification('Conta criada!', 'Sua identidade está em análise — normalmente aprovamos em até algumas horas.', 'shield-check');
+      showToast(`Conta criada! Bem-vindo, ${currentUserName.split(' ')[0]}.`);
+    }
+
+    function doForgotPassword(e) {
+      e.preventDefault();
+      const email = document.getElementById('forgot-email').value;
+      showAuthScreen('login');
+      showToast(`Enviamos um link de redefinição para ${email}.`);
+    }
+
+    function continueAsGuest() {
+      isGuest = true;
+      isLoggedIn = false;
+      currentUserName = "Visitante";
+      enterApp();
+      showToast('Navegando como visitante. Crie uma conta para reservar, publicar ou avaliar.');
+    }
+
+    function enterApp() {
+      document.getElementById('sec-auth').classList.add('hidden');
+      document.getElementById('app-header').classList.remove('hidden');
+      document.getElementById('app-main').classList.remove('hidden');
+      document.getElementById('app-footer').classList.remove('hidden');
+      applyUserIdentity(isGuest ? 'Visitante' : currentUserName);
+      switchTab('reservas');
+      renderNotifications();
+      lucide.createIcons();
+    }
+
+    function doLogout() {
+      isLoggedIn = false;
+      isGuest = false;
+      document.getElementById('app-header').classList.add('hidden');
+      document.getElementById('app-main').classList.add('hidden');
+      document.getElementById('app-footer').classList.add('hidden');
+      document.getElementById('sec-auth').classList.remove('hidden');
+      showAuthScreen('login');
+      showToast('Você saiu da sua conta.');
+    }
+
+    function doChangePassword(e) {
+      e.preventDefault();
+      const s1 = document.getElementById('change-senha1').value;
+      const s2 = document.getElementById('change-senha2').value;
+      if (s1.length < 6 || s1 !== s2) {
+        showToast('As senhas precisam ter 6+ caracteres e ser iguais.');
+        return;
+      }
+      document.getElementById('change-senha1').value = '';
+      document.getElementById('change-senha2').value = '';
+      showToast('Senha alterada com sucesso.');
+    }
+
+    function requestDeleteAccount() {
+      showToast('Solicitação recebida. Seus dados serão excluídos em até 30 dias, conforme a LGPD.');
+    }
+
+    // Bloqueia ações que exigem conta (reservar, publicar, anunciar, avaliar) para visitantes
+    function requireAuth(actionLabel) {
+      if (isLoggedIn) return true;
+      document.getElementById('auth-required-msg').innerText = `Crie uma conta ou faça login para ${actionLabel}.`;
+      document.getElementById('modal-auth-required').classList.remove('hidden');
+      return false;
+    }
+
+    // ================= NOTIFICAÇÕES =================
+    let notificationsData = [
+      { titulo: 'Fila de espera acionada', msg: 'Caio Andrade foi chamado para a vaga aberta no Baba da Terça — cota cobrada via Pix.', icon: 'users', lida: false },
+      { titulo: 'Pagamento confirmado', msg: 'Sua cota de R$ 15,00 no Baba da Terça das 20h foi confirmada.', icon: 'check-circle-2', lida: false },
+      { titulo: 'Avalie o último baba', msg: 'O Racha de Sábado terminou — avalie os jogadores e ganhe pontos de assiduidade.', icon: 'star', lida: false }
+    ];
+
+    function pushNotification(titulo, msg, icon) {
+      notificationsData.unshift({ titulo, msg, icon: icon || 'bell', lida: false });
+      renderNotifications();
+    }
+
+    function renderNotifications() {
+      const list = document.getElementById('notif-list');
+      const badge = document.getElementById('notif-badge');
+      if (!list) return;
+      const naoLidas = notificationsData.filter(n => !n.lida).length;
+      if (naoLidas > 0) { badge.innerText = naoLidas; badge.classList.remove('hidden'); }
+      else badge.classList.add('hidden');
+
+      if (notificationsData.length === 0) {
+        list.innerHTML = `<p class="text-xs text-inksoft p-4 text-center">Nenhuma notificação por aqui.</p>`;
+        return;
+      }
+      list.innerHTML = notificationsData.map(n => `
+        <div class="flex gap-3 p-3 rounded-xl ${n.lida ? '' : 'bg-pitchtint'}">
+          <i data-lucide="${n.icon}" class="w-4 h-4 text-pitch flex-shrink-0 mt-0.5"></i>
+          <div>
+            <p class="text-xs font-semibold text-ink">${n.titulo}</p>
+            <p class="text-[11px] text-inksoft">${n.msg}</p>
+          </div>
+        </div>
+      `).join('');
+      lucide.createIcons();
+    }
+
+    function toggleNotifications() {
+      document.getElementById('notif-dropdown').classList.toggle('hidden');
+    }
+
+    function markAllNotifsRead() {
+      notificationsData.forEach(n => n.lida = true);
+      renderNotifications();
+    }
+
+    document.addEventListener('click', (e) => {
+      const dropdown = document.getElementById('notif-dropdown');
+      const bell = document.getElementById('notif-bell');
+      if (dropdown && !dropdown.classList.contains('hidden') && !dropdown.contains(e.target) && !bell.contains(e.target)) {
+        dropdown.classList.add('hidden');
+      }
+    });
+
     function renderMyBabas() {
       const wrap = document.getElementById('my-babas-list');
       if (!wrap) return;
@@ -1094,6 +1538,9 @@
     }
 
     function switchTab(tabId) {
+      const gatedTabs = { cadastro: 'anunciar um campo', meusbabas: 'ver seus babas organizados', perfil: 'acessar seu perfil' };
+      if (gatedTabs[tabId] && !requireAuth(gatedTabs[tabId])) return;
+
       const allSections = ['reservas', 'matchmaking', 'seguranca', 'posjogo', 'meusbabas', 'perfil', 'cadastro'];
       allSections.forEach(t => document.getElementById(`sec-${t}`).classList.add('hidden'));
       document.getElementById(`sec-${tabId}`).classList.remove('hidden');
@@ -1327,6 +1774,7 @@
     }
 
     function openModalSplit(q) {
+      if (!requireAuth('reservar um horário e dividir o Pix')) return;
       selectedQuadra = q;
       document.getElementById('modal-quadra-title').innerText = q.nome;
       document.getElementById('split-goleiro-gratis').checked = false;
@@ -1365,7 +1813,10 @@
       showToast(`Vaga reservada para ${pos}. QR Code gerado.`);
     }
 
-    function openModalCreateMatch() { document.getElementById('modal-create-match').classList.remove('hidden'); }
+    function openModalCreateMatch() {
+      if (!requireAuth('publicar uma vaga de baba')) return;
+      document.getElementById('modal-create-match').classList.remove('hidden');
+    }
 
     function submitNewMatch(e) {
       e.preventDefault();
@@ -1492,6 +1943,7 @@
     }
 
     function submitEvaluation() {
+      if (!requireAuth('enviar sua avaliação')) return;
       showToast('Avaliação enviada. +15 pontos de assiduidade.');
       switchTab('matchmaking');
     }
@@ -1502,8 +1954,7 @@
       const pos = document.getElementById('edit-pos').value;
       matchesData.forEach(m => { if (m.organizador === currentUserName) m.organizador = name; });
       currentUserName = name;
-      document.getElementById('profile-name').innerText = name;
-      document.getElementById('nav-user-name').innerText = name;
+      applyUserIdentity(name);
       document.getElementById('profile-pos').innerText = `Posição preferida: ${pos}`;
       renderMyBabas();
       showToast('Perfil atualizado com sucesso.');
@@ -1547,6 +1998,7 @@
 
     function submitNewQuadra(e) {
       e.preventDefault();
+      if (!requireAuth('anunciar um campo')) return;
       const categoria = document.querySelector('input[name="cad-categoria"]:checked').value;
       const amenities = Array.from(document.querySelectorAll('.cad-amenity:checked')).map(el => el.value);
 
